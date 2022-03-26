@@ -8,87 +8,30 @@ params:
   lang: ES
 lang: "`r switch(params$lang, ES = 'es-ES', EN = 'en-US')`"
 output:
-  html_document: default
-  word_document: default
   pdf_document: default
+  word_document: default
+  html_document: default
 ---
 
-# Esto nos permite traducir estas etiquetas para que aparezcan en otro idioma en caso de que se usen en el documento para referenciar a figuras, tablas, etc
-language:
-  label:
-    fig: 'Figura '
-    tab: 'Tabla '
-    eq: 'Ecuación '
-    thm: 'Teorema '
-    lem: 'Lema '
-    def: 'Definición '
-    cor: 'Corolario '
-    prp: 'Proposición '
-    exm: 'Ejemplo '
-    exr: 'Ejercicio '
-    proof: 'Demostración. '
-    remark: 'Nota: '
-    solution: 'Solución. '
----
+\bigskip
 
-# Introducción
+\bigskip
 
-Este documento explicativo te puede servir de plantilla para la realización de proyectos con *Rmarkdown* para la realizacón de memorias de práctica, tareas, etc. Pretende ser autoexplicativo.
+\noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}
 
-# Estructura del fichero
+\bigskip
 
-El bloque inicial separado entre 3 guiones, se denomina cabecera YALM y determina el formato y tipo de documento generado Las opciones dependen del tipo de documento. Un documento que te ayudará a opciones más complejas lo puedes encontrar en este enlace <https://bookdown.org/yihui/rmarkdown/>
+\tableofcontents
 
-**NOTA**: Los espacios iniciales son imprescindibles. El documento debe empezar por los guiones (no puede haber comentarios previos)
+\bigskip
 
-**title**: "Pon un título a tu documento"\
-**subtitle**: Tratamiento de Datos. Grado en Ciencia de Datos- UV\
-**author**: "Pon aquí tu nombre y apellidos"
+\noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}
 
-Pone la fecha de generación del documento
 
-**date**: "`r Sys.Date()`" Pondría la fecha del día actual. También se puede poner fija "01/02/2021"
+\newpage
 
-Cambio de idioma para que en lugar de "Contents" ponga "Indice" al incluir la tabla de contenido
-
-**params**: **lang**: ES\
-**lang**: "`r switch(params$lang, ES = 'es-ES', EN = 'en-US')`"
-
-En este ejemplo, por defecto se generará un salida html, que es la que está descomentada. Si si quieres otras salidas o varias de ellas descomenta lo que proceda
-
-**output:** Salida(s) generadas
-
-[*Salida pdf*]{.ul}*. Si se incluye código en LaTex necesitarás tener instalado un compilador de Latex*\
-**pdf_document**:\
-**toc**: yes Tabla de contenido (índice)\
-**toc_depth**: 3 Número de niveles de la tabla de contenido (índice) \# 1, \#\#2,\#\#\#3\
-**number_sections**: yes Numeración de las secciones
-
-[Salida html_document]{.ul}:\
-**echo**: yes **number_sections**: yes\
-**theme**: lumen Aspecto y estilo. Otras opciones: *cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, and yeti*\
-**toc**: yes
-
-[*Salida html_notebook*]{.ul}*, como html, pero con algunas opciones de visualización*
-
-Las opciones siguientes nos permite traducir estas etiquetas para que aparezcan en otro idioma en caso de que se usen en el documento para referenciar a figuras, tablas, etc.
-
-**language:**\
-**label:** **fig:** 'Figura '\
-**tab:** 'Tabla '\
-**eq:** 'Ecuación '\
-**thm:** 'Teorema '\
-**lem:** 'Lema '\
-**def:** 'Definición '\
-**cor:** 'Corolario '\
-**prp:** 'Proposición '\
-**exm:** 'Ejemplo '\
-**exr:** 'Ejercicio '\
-**proof:** 'Demostración. '\
-**remark:** 'Nota: '\
-**solution:** 'Solución. '
-
-# Configuración del los bloques (*Chunks*)
+# Informacion de la plantilla que luego borraremos
+Configuración del los bloques (*Chunks*)
 
 Cada bloque tiene muchos parámetros que pueden ser configurados
 
@@ -129,13 +72,10 @@ knit_hooks$set(inline = function(x) {
 #knit_hooks$set(plot = knitr:::hook_plot_html)
 ```
 
-# Instalación automática de paquetes
+Instalación automática de paquetes
 
-Especificar las librerías necesarias para ejecutar el código en la variable ***packages***. Si no está instaladas, se instalarán y cargarán (solo para aquellas que están en el repositorio <http://cran.rediris.es>)
 
-El siguiente bloque, al no especificar opciones del *chunk* usa la configuración por defecto.
-
-```{r}
+```{r include= F}
 
 # Especificamos las librerías necesarias en esta lista
 
@@ -156,28 +96,14 @@ search()
 
 ```
 
-# Trabaja proyectos.
-
-Para cada tarea crea un nuevo proyecto con, al menos, una carpeta *./data*, que contenga los datos (puedes usar carpetas adicionales para organizar la información **./program, /figuras**, etc). (La carpeta donde se encuentra este fichero es un proyecto)
-
 # Introducción del trabajo
 
-Haz un breve introducción indicando el contenido del documento:
+El objetivo de este trabajo es ... bla bla bla 
 
-" El objetivo de esta *tarea/trabajo/práctica* es ... bla bla bla "
+# Importacion de datos
 
-## Subapartado (nivel 2 \#\#). Rutas locales
 
-Usa rutas referidas a la carpeta en la que se encuentra el fichero fuente, y siempre rutas **relativas** a dicha ubicación. Ejemplos
 
-**ruta1\<-'data/tabla1.txt'** : el fichero está en la carpeta datos que cuelga del directorio donde está el código.
 
-**ruta2\<-'./data/tabla1.txt'** : el fichero está en la carpeta datos que cuelga de un nivel superior
-
-**ruta3\<-'../data/tabla1.txt'** : el fichero está en la carpeta datos que cuelga de dos niveles superiores
-
-**ruta4\<-'./../data/tabla1.txt'** : el fichero está en la carpeta datos que cuelga de tres niveles superiores
-
-<font color=red size=4>ruta5\<-'C:/MisDatos/Ej.txt' </font> **NO USAR NUNCA UNA RUTA ABSOLUTA COMO ESTA**
 
 
