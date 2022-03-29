@@ -1,8 +1,8 @@
 ---
 # Ver https://bookdown.org/yihui/rmarkdown/ 
-title: "Pon un título a tu documento"
+title: "Mini Proyecto 2022. Contaminación acústica en el barrio de Ruzafa"
 subtitle: Tratamiento de Datos. Grado en Ciencia de Datos- UV
-author: "Sandra Paniagua Sanchez"
+author: "Sandra Paniagua Sanchez, "
 date:  "`r Sys.Date()`"  #Pondría la fecha del día actual
 params:
   lang: ES
