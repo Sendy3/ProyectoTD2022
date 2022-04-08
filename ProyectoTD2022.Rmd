@@ -102,6 +102,65 @@ El objetivo de este trabajo es ... bla bla bla
 
 # Importacion de datos
 
+```{r}
+library(readr)
+filename <- "data/Ruzafa1.csv"
+download.file(url='https://opendata.vlci.valencia.es/datastore/dump/a54fb175-8013-460a-a2f0-22de7a210d7a?format=csv&bom=true', destfile = filename)
+Ruzafa1 <- read_csv(filename)
+
+filename <- "data/Cadiz16.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/75a878a9-2bd9-4619-98ec-3224be867c65?format=csv&bom=true", destfile = filename)
+Cadiz16 <- read_csv(filename)
+
+filename <- "data/Cadiz3.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/6fa5210b-f9c7-47c8-9d1f-ddb7568f62de?format=csv&bom=true", destfile = filename)
+Cadiz3 <- read_csv(filename)
+
+filename <- "data/Cuba3.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/5a050cef-1107-4b3b-8e61-5daf5cfb2ca4?format=csv&bom=true", destfile = filename)
+Cuba3 <- read_csv(filename)
+
+filename <- "data/Sueca2.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/e580f492-a2f6-4305-af24-f4c4d05b911c?format=csv&bom=true", destfile = filename)
+Sueca2 <- read_csv(filename)
+
+filename <- "data/Sueca61.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/8058f1a5-c605-4baa-afff-2f638efb767f?format=csv&bom=true", destfile = filename)
+Sueca61 <- read_csv(filename)
+
+filename <- "data/Sueca32.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/d842601d-35b4-4b88-96f7-42e8f68e1b74?format=csv&bom=true", destfile = filename)
+Sueca32 <- read_csv(filename)
+
+filename <- "data/Maria.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/ea008906-e06a-4c72-9fe6-3238e212aae4?format=csv&bom=true", destfile = filename)
+Maria <- read_csv(filename)
+
+filename <- "data/Serrano.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/64e4b7b4-e633-4753-b0ef-a57d785076f8?format=csv&bom=true", destfile = filename)
+Serrano <- read_csv(filename)
+
+filename <- "data/Cadiz.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/ff8678b6-748e-4908-ab5b-9c7ff567da61?format=csv&bom=true", destfile = filename)
+Cadiz <- read_csv(filename)
+
+filename <- "data/Cervera34.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/b26d42ae-2be9-481a-9b79-71392d9e80bd?format=csv&bom=true", destfile = filename)
+Cervera34 <- read_csv(filename)
+
+filename <- "data/Rico21.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/1b41d86b-3939-488b-9035-92d851245924?format=csv&bom=true", destfile = filename)
+Rico21 <- read_csv(filename)
+
+filename <- "data/Serrano21.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/784f4732-abc5-41b1-857b-42decb306643?format=csv&bom=true", destfile = filename)
+Serrano21 <- read_csv(filename)
+
+filename <- "data/Cortes.csv"
+download.file(url="https://opendata.vlci.valencia.es/datastore/dump/3b2fe345-08fc-49d7-85c8-8cccf6a7e814?format=csv&bom=true", destfile = filename)
+Cortes <- read_csv(filename)
+
+```
 
 
 
