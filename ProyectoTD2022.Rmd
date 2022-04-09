@@ -106,7 +106,9 @@ El objetivo de este trabajo es ... bla bla bla
 library(readr)
 filename <- "data/Ruzafa1.csv"
 download.file(url='https://opendata.vlci.valencia.es/datastore/dump/a54fb175-8013-460a-a2f0-22de7a210d7a?format=csv&bom=true', destfile = filename)
-Ruzafa1 <- read_csv(filename)
+Ruzafa1 <- read.csv(filename)
+save(file= filename, Ruzafa1)
+
 
 filename <- "data/Cadiz16.csv"
 download.file(url="https://opendata.vlci.valencia.es/datastore/dump/75a878a9-2bd9-4619-98ec-3224be867c65?format=csv&bom=true", destfile = filename)
