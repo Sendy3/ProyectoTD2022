@@ -79,7 +79,7 @@ Instalación automática de paquetes
 
 # Especificamos las librerías necesarias en esta lista
 
-packages = c("tidyverse","knitr")
+packages = c("tidyverse","knitr", "lubridate")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -174,6 +174,37 @@ for (i in archivos){
   
 }
 ```
+
+Asegurarse de que las fechas estan en el formato correcto
+```{r}
+for (i in archivos){
+  i$recvTime <- ymd_hms(i$recvTime)
+  i$dateObserved <- ymd(i$dateObserved)
+  
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
