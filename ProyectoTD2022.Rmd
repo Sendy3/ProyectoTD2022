@@ -175,17 +175,76 @@ for (i in archivos){
 }
 ```
 
-Asegurarse de que las fechas estan en el formato correcto
+# Asegurarse de que las fechas estan en el formato correcto
 ```{r}
 for (i in archivos){
   i$recvTime <- ymd_hms(i$recvTime)
   i$dateObserved <- ymd(i$dateObserved)
-  
 }
-
 ```
 
 
+# Extrer la tabla de datos numericos
+```{r}
+library(magrittr)
+
+
+myvars <- c("LAeq", "LAeq_d", "LAeq_den", "LAeq_e", "LAeq_n")
+
+#Estadisticos Ruzafa1 con dos decimales
+valores_Ruzafa1 <- Ruzafa1 %>% gather(key = "tipo", value = "Valor", myvars) %>%select(ï.._id, tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Ruzafa2 con dos decimales
+valores_Ruzafa2 <- Ruzafa2 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Cadiz16 con dos decimales
+valores_Cadiz16  <- Cadiz16 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Cadiz con dos decimales
+valores_Cadiz  <- Cadiz %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+#Estadisticos Cadiz3 con dos decimales
+valores_Cadiz3  <- Cadiz3 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Cervera34 con dos decimales
+valores_Cervera34  <- Cervera34 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+#Estadisticos Cortes con dos decimales
+valores_Cortes  <- Cortes %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Maria con dos decimales
+valores_Maria  <- Maria %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Cadiz3 con dos decimales
+valores_Rico21  <- Rico21 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+#Estadisticos Serrano con dos decimales
+valores_Serrano  <- Serrano %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Serrano21 con dos decimales
+valores_Serrano21  <- Serrano21 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Sueca2 con dos decimales
+valores_Sueca2  <- Sueca2 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+
+#Estadisticos Sueca32 con dos decimales
+valores_Sueca32  <- Sueca32 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+
+#Estadisticos Sueca61 con dos decimales
+valores_Sueca61  <- Sueca61 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+
+```
 
 
 
