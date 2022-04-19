@@ -101,7 +101,7 @@ Instalación automática de paquetes
 
 # Especificamos las librerías necesarias en esta lista
 
-packages = c("tidyverse","knitr", "lubridate")
+packages = c("tidyverse","knitr", "lubridate", "readr", "dplyr", "forcats", "lubridate", "magrittr", "stringr", "tibble", "tidyr", "tidyverse", "base", "datasets")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -136,9 +136,11 @@ filename <- "data/Cadiz16.csv"
 download.file(url="https://opendata.vlci.valencia.es/datastore/dump/75a878a9-2bd9-4619-98ec-3224be867c65?format=csv&bom=true", destfile = filename)
 Cadiz16 <- read_csv(filename)
 
+
 filename <- "data/Cadiz3.csv"
 download.file(url="https://opendata.vlci.valencia.es/datastore/dump/6fa5210b-f9c7-47c8-9d1f-ddb7568f62de?format=csv&bom=true", destfile = filename)
 Cadiz3 <- read_csv(filename)
+
 
 filename <- "data/Cuba3.csv"
 download.file(url="https://opendata.vlci.valencia.es/datastore/dump/5a050cef-1107-4b3b-8e61-5daf5cfb2ca4?format=csv&bom=true", destfile = filename)
@@ -215,7 +217,6 @@ Ruzafa1$dateObserved <- ymd(Ruzafa1$dateObserved)
 ```{r}
 library(magrittr)
 
-
 myvars <- c("LAeq", "LAeq_d", "LAeq_den", "LAeq_e", "LAeq_n")
 
 #Estadisticos Ruzafa1 con dos decimales
@@ -272,10 +273,7 @@ valores_Sueca61  <- Sueca61 %>% gather(key = "tipo", value = "Valor", myvars) %>
 
 
 # Unir dataframes
-
 ```{r}
-
-
 datos <- full_join(Cadiz16, Cadiz, by = NULL) %>% full_join(Cadiz3) %>% full_join(Cervera34) %>%  full_join(Cortes) %>% full_join(Maria) %>% full_join(Rico21) %>%  full_join(Serrano) %>% full_join(Serrano21) %>% full_join(Sueca2) %>%  full_join(Sueca32) %>%  full_join(Sueca61) %>% full_join(Ruzafa1)
 ```
 
