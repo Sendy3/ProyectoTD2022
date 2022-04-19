@@ -30,6 +30,29 @@ output:
 
 \newpage
 
+# Informacion de cada columna
+
+RecvTime: Dato proporcionado por la plataforma de ciudad VLCi. Fecha en la que se insertó el dato en la plataforma.
+
+FiwareServicePath: Dato proporcionado por la plataforma de ciudad VLCi. Servicio de la plataforma VLCi al que pertenece el sensor.
+
+EntityType: Dato proporcionado por la plataforma de ciudad VLCi. Tipo de entidad del sensor en la plataforma VLCi.
+
+EntityId: Dato proporcionado por la plataforma de ciudad VLCi. Identificador único del sensor en la plataforma VLCi.
+
+LAeq: Nivel sonoro continuo equivalente. Se define en la ISO 1996-2:2017 como el valor del nivel de presión en dBA en ponderación A de un sonido estable que en un intervalo de tiempo T posee la misma presión sonora cuadrática media que el sonido que se mide y cuyo nivel varía con el tiempo. En este caso el período establecida para este sensor es de 1 minuto.
+
+LAeq_d: Es un indicador de ruido asociado al día, donde al día le corresponden 12 horas, en el período que se extiende desde las 7 hasta las 19 horas.
+
+LAeq_den: índice de ruido día-tarde-noche, es utilizado para determinar la molestia vinculada a la exposición al ruido.
+
+LAeq_e: Es un indicador del nivel sonoro durante la tarde, donde a la tarde le corresponden 4 horas, en el período que se extiende desde las 19 hasta las 23 horas.
+
+LAeq_n: Es un indicador del nivel sonoro durante la noche, donde a la noche le corresponden 8 horas, en el período que se extiende desde las 23 hasta las 7 horas.
+
+Dateobserved: Día al que se refieren las medidas.
+
+
 # Informacion de la plantilla que luego borraremos
 Configuración del los bloques (*Chunks*)
 
@@ -50,7 +73,6 @@ Se pueden especificicar opciones generales por defecto en *opts_chunk\$set*
 Más opciones en el enlace [\<https://bookdown.org/yihui/rmarkdown/\>](https://bookdown.org/yihui/rmarkdown/){.uri}
 
 ```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
-
 
 # CONFIGURACIÓN GENERAL
 library(knitr)
@@ -107,7 +129,7 @@ library(readr)
 filename <- "data/Ruzafa1.csv"
 download.file(url='https://opendata.vlci.valencia.es/datastore/dump/a54fb175-8013-460a-a2f0-22de7a210d7a?format=csv&bom=true', destfile = filename)
 Ruzafa1 <- read.csv(filename)
-#save(file= filename, Ruzafa1)
+save(file= filename, Ruzafa1)
 
 
 filename <- "data/Cadiz16.csv"
@@ -167,21 +189,26 @@ Para comprobar que todos tienen el mismo numero de columnas y similar numero de 
 
 ```{r}
 
-archivos <- list(Ruzafa1, Cadiz16, Cadiz, Cadiz3, Cervera34, Cortes, Maria, Rico21, Ruzafa2, Serrano, Serrano21, Sueca2, Sueca32, Sueca61)
+archivos <- list(Ruzafa1, Cadiz16, Cadiz, Cadiz3, Cervera34, Cortes, Maria, Rico21, Serrano, Serrano21, Sueca2, Sueca32, Sueca61)
 
 for (i in archivos){
   print(dim(i))
-  
 }
+
 ```
 
-# Asegurarse de que las fechas estan en el formato correcto
+#  I m,Asegurarse de que las fechas estan en el formato correcto
 ```{r}
 for (i in archivos){
   i$recvTime <- ymd_hms(i$recvTime)
   i$dateObserved <- ymd(i$dateObserved)
 }
+Ruzafa1$recvTime <- ymd_hms(Ruzafa1$recvTime)
+Ruzafa1$dateObserved <- ymd(Ruzafa1$dateObserved)
 ```
+
+
+
 
 
 # Extrer la tabla de datos numericos
@@ -194,9 +221,6 @@ myvars <- c("LAeq", "LAeq_d", "LAeq_den", "LAeq_e", "LAeq_n")
 #Estadisticos Ruzafa1 con dos decimales
 valores_Ruzafa1 <- Ruzafa1 %>% gather(key = "tipo", value = "Valor", myvars) %>%select(ï.._id, tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
 
-
-#Estadisticos Ruzafa2 con dos decimales
-valores_Ruzafa2 <- Ruzafa2 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
 
 
 #Estadisticos Cadiz16 con dos decimales
@@ -246,6 +270,14 @@ valores_Sueca61  <- Sueca61 %>% gather(key = "tipo", value = "Valor", myvars) %>
 
 ```
 
+
+# Unir dataframes
+
+```{r}
+
+
+datos <- full_join(Cadiz16, Cadiz, by = NULL) %>% full_join(Cadiz3) %>% full_join(Cervera34) %>%  full_join(Cortes) %>% full_join(Maria) %>% full_join(Rico21) %>%  full_join(Serrano) %>% full_join(Serrano21) %>% full_join(Sueca2) %>%  full_join(Sueca32) %>%  full_join(Sueca61) %>% full_join(Ruzafa1)
+```
 
 
 
