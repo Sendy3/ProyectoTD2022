@@ -277,9 +277,12 @@ valores_Sueca61  <- Sueca61 %>% gather(key = "tipo", value = "Valor", myvars) %>
 datos <- full_join(Cadiz16, Cadiz, by = NULL) %>% full_join(Cadiz3) %>% full_join(Cervera34) %>%  full_join(Cortes) %>% full_join(Maria) %>% full_join(Rico21) %>%  full_join(Serrano) %>% full_join(Serrano21) %>% full_join(Sueca2) %>%  full_join(Sueca32) %>%  full_join(Sueca61) %>% full_join(Ruzafa1)
 ```
 
+# Formato tidy
+```{r}
 
+tidy <- datos %>% select(starts_with("LA"), dateObserved, entityId, recvTime) %>% gather( key = "Nivel sonoro continuo equivalente", value = "Valores", starts_with("LA"))
 
-
+```
 
 
 
