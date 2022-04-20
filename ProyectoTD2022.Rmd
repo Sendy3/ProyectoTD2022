@@ -187,6 +187,7 @@ download.file(url="https://opendata.vlci.valencia.es/datastore/dump/3b2fe345-08f
 Cortes <- read_csv(filename)
 
 ```
+# Asegurarse de que tienen el mismo numero de columnas
 Para comprobar que todos tienen el mismo numero de columnas y similar numero de observaciones hacemos un bucle for de la lista de archivos a observar.
 
 ```{r}
@@ -199,7 +200,7 @@ for (i in archivos){
 
 ```
 
-#  I m,Asegurarse de que las fechas estan en el formato correcto
+#  Asegurarse de que las fechas estan en el formato correcto
 ```{r}
 for (i in archivos){
   i$recvTime <- ymd_hms(i$recvTime)
@@ -211,6 +212,21 @@ Ruzafa1$dateObserved <- ymd(Ruzafa1$dateObserved)
 
 
 
+# 4. Unir dataframes
+```{r}
+datos <- full_join(Cadiz16, Cadiz, by = NULL) %>% full_join(Cadiz3) %>% full_join(Cervera34) %>%  full_join(Cortes) %>% full_join(Maria) %>% full_join(Rico21) %>%  full_join(Serrano) %>% full_join(Serrano21) %>% full_join(Sueca2) %>%  full_join(Sueca32) %>%  full_join(Sueca61) %>% full_join(Ruzafa1)
+```
+
+# 5. Formato tidy
+```{r}
+
+tidy <- datos %>% select(starts_with("LA"), dateObserved, entityId, recvTime) %>% gather( key = "Nivel sonoro continuo equivalente", value = "Valores", starts_with("LA"))
+
+```
+
+
+
+# 6. blablabla
 
 
 # Extrer la tabla de datos numericos
@@ -270,26 +286,6 @@ valores_Sueca32  <- Sueca32 %>% gather(key = "tipo", value = "Valor", myvars) %>
 valores_Sueca61  <- Sueca61 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
 
 ```
-
-
-# Unir dataframes
-```{r}
-datos <- full_join(Cadiz16, Cadiz, by = NULL) %>% full_join(Cadiz3) %>% full_join(Cervera34) %>%  full_join(Cortes) %>% full_join(Maria) %>% full_join(Rico21) %>%  full_join(Serrano) %>% full_join(Serrano21) %>% full_join(Sueca2) %>%  full_join(Sueca32) %>%  full_join(Sueca61) %>% full_join(Ruzafa1)
-```
-
-# Formato tidy
-```{r}
-
-tidy <- datos %>% select(starts_with("LA"), dateObserved, entityId, recvTime) %>% gather( key = "Nivel sonoro continuo equivalente", value = "Valores", starts_with("LA"))
-
-```
-
-
-
-
-
-
-
 
 
 
