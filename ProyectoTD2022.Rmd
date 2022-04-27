@@ -120,7 +120,7 @@ search()
 
 # Introducción del trabajo
 
-El objetivo de este trabajo es ... bla bla bla 
+El objetivo de este trabajo es analizar los datos recogidos por sensores que monitorizan el nivel de ruido en diferentes localizaciones del barrio de Ruzafa. Los datos los hemos obtenido gracias a que están disponibles en la plataforma de datos abiertos del Ayuntamiento de Valencia, dentro de la categoría medio ambiente.
 
 # Importacion de datos
 
