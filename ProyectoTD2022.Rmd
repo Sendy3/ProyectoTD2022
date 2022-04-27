@@ -53,25 +53,6 @@ LAeq_n: Es un indicador del nivel sonoro durante la noche, donde a la noche le c
 Dateobserved: Día al que se refieren las medidas.
 
 
-# Informacion de la plantilla que luego borraremos
-Configuración del los bloques (*Chunks*)
-
-Cada bloque tiene muchos parámetros que pueden ser configurados
-
-**include** = **FALSE** evita que el código y los resultados aparezcan en el archivo terminado. R Markdown aún ejecuta el código en el fragmento y los resultados pueden ser utilizados por otros fragmentos.
-
-**echo = FALSE** evita que el código, pero no los resultados, aparezcan en el archivo terminado. Esta es una manera útil de incrustar figuras.
-
-**message = FALSE** evita que los mensajes generados por el código aparezcan en el archivo finalizado.
-
-**warning = FALSE** evita que las advertencias generadas por el código aparezcan en el final.
-
-**fig.cap = "..."** agrega un título a los resultados gráficos.
-
-Se pueden especificicar opciones generales por defecto en *opts_chunk\$set*
-
-Más opciones en el enlace [\<https://bookdown.org/yihui/rmarkdown/\>](https://bookdown.org/yihui/rmarkdown/){.uri}
-
 ```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 
 # CONFIGURACIÓN GENERAL
@@ -209,7 +190,6 @@ for (i in archivos){
 Ruzafa1$recvTime <- ymd_hms(Ruzafa1$recvTime)
 Ruzafa1$dateObserved <- ymd(Ruzafa1$dateObserved)
 ```
-
 
 
 # 4. Unir dataframes
