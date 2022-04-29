@@ -2,7 +2,7 @@
 # Ver https://bookdown.org/yihui/rmarkdown/ 
 title: "Mini Proyecto 2022. Contaminación acústica en el barrio de Ruzafa"
 subtitle: Tratamiento de Datos. Grado en Ciencia de Datos- UV
-author: "Sandra Paniagua Sanchez, Máximo Valero,Sergio Cabral, Antonio Hernando Graboleda"
+author: "Sandra Paniagua Sanchez, Máximo Valero,Sergio Cabral, Antonio Hernando Graboleda, Mauro Marín Aura"
 date:  "`r Sys.Date()`"  #Pondría la fecha del día actual
 params:
   lang: ES
