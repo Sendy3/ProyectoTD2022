@@ -267,6 +267,26 @@ valores_Sueca61  <- Sueca61 %>% gather(key = "tipo", value = "Valor", myvars) %>
 
 ```
 
+# CORRELACIÓN Y VARIANZA
+#ARREGLAR ESTOS GRÁFICOS CON LAS NUEVAS VARIABLES (D,M,Y) Y COMPROBAR QUE FUNCIONAN Y DAN RESULTADOS COHERENTES.
+"""
+library(ggplot2)
+ggplot(data = datos,
+       aes(x = cut(recvTime , breaks = 3), y = LAeq_d)) +
+  geom_boxplot()
+
+
+dsepall <- datos$LAeq_den - mean(datos$LAeq_den)
+dsepalw <- datos$LAeq_d - mean(datos$LAeq_d)
+
+ggplot(data.frame(dsepall,dsepalw), aes(x=dsepall, y=dsepalw)) +geom_point() +geom_hline(yintercept=0, linetype="dashed", color = "red") +geom_vline(xintercept=0, linetype="dashed", color = "red") +theme_minimal()
+
+ggplot(iris, aes(x=dsepall, y=dsepalw, shape=dsepalw)) +geom_point() +geom_smooth(method=lm, se=F, fullrange=F)+scale_color_brewer(palette="Dark2")+theme_minimal() +stat_ellipse(type = "norm")
+
+
+ggplot(data = datos, aes(x = dateObserved, y = datos$LAeq)) +geom_point() +facet_wrap(~ datos)
+"""
+
 
 
 
