@@ -204,9 +204,50 @@ tidy <- datos %>% select(starts_with("LA"), dateObserved, entityId, recvTime) %>
 
 ```
 
+# Cambiar los nombres de identidad por el nombre de cada calle
+
+```{r echo = T}
+tidy$entityId[tidy$entityId == "T248677-daily"]<- "Cadiz"
+tidy$entityId[tidy$entityId == "T248671-daily"]<- "Cadiz16"
+tidy$entityId[tidy$entityId == "T248655-daily"]<- "Cadiz3"
+tidy$entityId[tidy$entityId == "T248678-daily"]<- "Cervera34"
+tidy$entityId[tidy$entityId == "T248661-daily"]<- "Cortes"
+tidy$entityId[tidy$entityId == "T248655-daily"]<- "Cuba3"
+tidy$entityId[tidy$entityId == "T248670-daily"]<- "Maria"
+tidy$entityId[tidy$entityId == "T248672-daily"]<- "Rico21"
+tidy$entityId[tidy$entityId == "T248652-daily"]<- "Ruzafa1"
+tidy$entityId[tidy$entityId == "T248676-daily"]<- "Serrano"
+tidy$entityId[tidy$entityId == "T248669-daily"]<- "Serrano21"
+tidy$entityId[tidy$entityId == "T248683-daily"]<- "Sueca2"
+tidy$entityId[tidy$entityId == "T248680-daily"]<- "Sueca32"
+tidy$entityId[tidy$entityId == "T248684-daily"]<- "Sueca61"
 
 
-# 6. blablabla
+
+```
+
+
+
+# 6. Graficos
+
+Primero buscamos los valores infinitos de nuestro data.frame Y seleccionamos los que son distintos de infinito.
+```{r}
+tidy_infinitos <- tidy %>% filter(Valores == Inf)
+
+tidy_sininfinitos <- tidy %>% filter(Valores != Inf)
+```
+
+Cambiamos aquellos que tengan Inf por un valor muy alto que hemos considerado que seria 100.
+```{r}
+tidy_infinitos$Valores[tidy_infinitos$Valores== Inf]<- 100
+
+```
+
+Por ultimo, actualizamos el data.frame tidy con los valores cambiados
+```{r}
+tidy <- rbind(tidy_sininfinitos, tidy_infinitos)
+```
+
 
 
 # Extrer la tabla de datos numericos
@@ -217,59 +258,109 @@ myvars <- c("LAeq", "LAeq_d", "LAeq_den", "LAeq_e", "LAeq_n")
 
 #Estadisticos Ruzafa1 con dos decimales
 valores_Ruzafa1 <- Ruzafa1 %>% gather(key = "tipo", value = "Valor", myvars) %>%select(ï.._id, tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+```
 
+#Representacion grafica de los valores agrupados por calle y tipo de toma del sonido
+```{r}
+library(forcats)
 
-
-#Estadisticos Cadiz16 con dos decimales
-valores_Cadiz16  <- Cadiz16 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-
-#Estadisticos Cadiz con dos decimales
-valores_Cadiz  <- Cadiz %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-#Estadisticos Cadiz3 con dos decimales
-valores_Cadiz3  <- Cadiz3 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-
-#Estadisticos Cervera34 con dos decimales
-valores_Cervera34  <- Cervera34 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-#Estadisticos Cortes con dos decimales
-valores_Cortes  <- Cortes %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-
-#Estadisticos Maria con dos decimales
-valores_Maria  <- Maria %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-
-#Estadisticos Cadiz3 con dos decimales
-valores_Rico21  <- Rico21 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-#Estadisticos Serrano con dos decimales
-valores_Serrano  <- Serrano %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-
-#Estadisticos Serrano21 con dos decimales
-valores_Serrano21  <- Serrano21 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-
-#Estadisticos Sueca2 con dos decimales
-valores_Sueca2  <- Sueca2 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-
-
-#Estadisticos Sueca32 con dos decimales
-valores_Sueca32  <- Sueca32 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-
-#Estadisticos Sueca61 con dos decimales
-valores_Sueca61  <- Sueca61 %>% gather(key = "tipo", value = "Valor", myvars) %>%select( "_id", tipo, Valor) %>% group_by(tipo) %>% summarise("Valor minimo" = min(Valor, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valor, na.rm=TRUE), Mediana = median(Valor, na.rm=TRUE), "Valor medio" = mean(Valor, na.rm=TRUE), "Desviació típica" = sd(Valor, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valor, na.rm=TRUE), "Valor maximo" = max(Valor, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
+grafico <- valores %>%
+  group_by(entityId, `Nivel sonoro continuo equivalente`)  %>% 
+  ggplot(aes(fct_reorder(entityId, `Nivel sonoro continuo equivalente`), Media)) + labs(x="Nombre de la calle", y ="Promedio del LA en cada calle", title = "Media de cada LA en cada calle") + geom_col(aes(fill =`Nivel sonoro continuo equivalente`), position = 'dodge')
+grafico
+ggplotly(grafico)
 
 ```
 
+
+```{r}
+
+s <- tidy %>% group_by(month(dateObserved), `Nivel sonoro continuo equivalente`) %>%summarise(promedio_anual=mean(Valores)) 
+#HACER GRAFICO DE ESTE Y DECIR EN QUE AÑO 
+```
+
+
+
+#Detectar outliers con la regla Hampel
+
+```{r}
+reglahampel <- function(x) {
+  
+  mediana <- median(x, na.rm=T)
+  medabdev <- mad(x, na.rm=T)  
+  
+  lowLim <- mediana-3 *medabdev
+  upLim <- mediana+3*medabdev
+  
+  x < lowLim | x > upLim
+  }
+
+
+metodos <- list(reglahampel=reglahampel)
+
+dirty <- tidy %>% mutate(across(Valores,metodos))
+
+```
+
+
+
+```{r}
+# Regla boxplot
+reglaboxplot <- function(x){
+  
+  Q25 <- quantile(x, 0.25, na.rm=T)
+  Q75 <- quantile(x, 0.75, na.rm=T)
+  
+  lowLim <- Q25-1.5*IQR(x, na.rm=T)
+  upLim <- Q75+1.5*IQR(x, na.rm=T)
+  
+  x <  lowLim | x > upLim 
+  }
+
+
+# Percentiles
+reglapercentil <- function(x){
+  
+  lowLim <- quantile(x, 0.05, na.rm=T)
+  upLim <- quantile(x, 0.95, na.rm=T)
+  
+  x <  lowLim | x > upLim 
+}
+
+metodos <- list(reglahampel=reglahampel, reglaboxplot = reglaboxplot, reglapercentil = reglapercentil)
+
+dirty <- tidy %>% mutate(across(Valores,metodos))
+
+```
+
+
+#Representacion de los valores outliers
+```{r}
+dirty %>% 
+  pivot_longer(cols = contains("regla"), names_to="regla", values_to="outliers") %>% 
+  ggplot(aes(regla, Valores, color=outliers))+ geom_point(position='jitter')
+
+```
+
+Como no hay missing data en el formato tidy, hemos considerado que no hay que imputar en el formato dirty porque seria sustituirlo por la media de cada calle y no aportaria mas informacion.
+
+```{r}
+library(readr)
+library(plotly)
+
+grafico <- tidy %>% filter(`Nivel sonoro continuo equivalente` == "LAeq_d") %>% ggplot( aes(x = dateObserved, y = Valores, color = entityId)) + geom_line() + labs(title= "Nivel de sonido por dia de cada calle", x = "", y = "", subtitle = "...") + theme_bw() + scale_x_date() + scale_y_continuous(breaks = c(0, 25, 50,65, 75,85, 100)) + scale_x_date(date_labels = format("%b %d, %Y"))
+
+#Mostrar el grafico 
+grafico
+#Generar un grafico interactivo al compilar en HTML
+ggplotly(grafico)
+
+```
+
+
 # CORRELACIÓN Y VARIANZA
 #ARREGLAR ESTOS GRÁFICOS CON LAS NUEVAS VARIABLES (D,M,Y) Y COMPROBAR QUE FUNCIONAN Y DAN RESULTADOS COHERENTES, *COMENTAR LOS RESULTADOS*
-"""
+```{r}
 library(ggplot2)
 ggplot(data = datos,
        aes(x = cut(recvTime , breaks = 3), y = LAeq_d)) +
@@ -289,7 +380,7 @@ ggplot(data = datos, aes(x = dateObserved, y = datos$LAeq)) +geom_point() +facet
 pairs(Ruzafa1$dateObserved~Ruzafa1$LAeq)
 pairs(Serrano$dateObserved~Serrano$LAeq)
 # HACER EL PAIRS CON DISTINTAS VARIABLES Y COMENTAR
-"""
+```
 
 
 # PREGUNTAS: (hay que responderlas apoyándose de las instrucciones y/o gráficas de R)
