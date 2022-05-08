@@ -380,6 +380,7 @@ ggplot(data = datos, aes(x = dateObserved, y = datos$LAeq)) +geom_point() +facet
 pairs(Ruzafa1$dateObserved~Ruzafa1$LAeq)
 pairs(Serrano$dateObserved~Serrano$LAeq)
 # HACER EL PAIRS CON DISTINTAS VARIABLES Y COMENTAR
+#AÑADIR COEFICIENTES DE CORRELACIÓN Y VARIANZA Y MÁS COSAS QUE SE OS OCURRA INVESTIGANDO
 ```
 
 
