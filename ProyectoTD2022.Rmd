@@ -285,6 +285,10 @@ ggplot(iris, aes(x=dsepall, y=dsepalw, shape=dsepalw)) +geom_point() +geom_smoot
 
 
 ggplot(data = datos, aes(x = dateObserved, y = datos$LAeq)) +geom_point() +facet_wrap(~ datos)
+
+pairs(Ruzafa1$dateObserved~Ruzafa1$LAeq)
+pairs(Serrano$dateObserved~Serrano$LAeq)
+# HACER EL PAIRS CON DISTINTAS VARIABLES Y COMENTAR
 """
 
 
