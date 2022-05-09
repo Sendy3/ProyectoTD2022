@@ -384,6 +384,61 @@ pairs(Serrano$dateObserved~Serrano$LAeq)
 
 
 
+RESPUESTA A PREGUNTAS:
+
+1. ¿Qué año hubo más ruido en Fallas? (Entre Sept 21 y Mar 22), comparar y mostrar los gráficos.
+
+Para el año 2021 durante el dia obtenemos el siguiente grafico del cual podemos ver claramente que el mes que mas ruido hubo fue en marzo seguido del mes de Spetiembre.
+
+```{r}
+d <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d", year(dateObserved) == 2021) %>% group_by(month(dateObserved)) %>% rename(mes = "month(dateObserved)") 
+#%>% summarise(promedio_mensual=mean(Valores)) %>% rename(mes = "month(dateObserved)") 
+
+d$mes[d$mes == 1]<- "Enero"
+d$mes[d$mes == 2]<- "Febrero"
+d$mes[d$mes == 3]<- "Marzo"
+d$mes[d$mes == 4]<- "Abril"
+d$mes[d$mes == 5]<- "Mayo"
+d$mes[d$mes == 6]<- "Junio"
+d$mes[d$mes == 7]<- "Julio"
+d$mes[d$mes == 8]<- "Agosto"
+d$mes[d$mes == 9]<- "Septiembre"
+d$mes[d$mes == 10]<- "Octubre"
+d$mes[d$mes == 11]<- "Noviembre"
+d$mes[d$mes == 12]<- "Diciembre"
+
+
+ggplot(d, aes(x = mes, y = Valores))+ geom_path(size=5, colour="red") + guides(color="none")+ ylab("Nivel de LAeq_d\n durante el dia \n en el año 2021")+ xlab("Meses")+ theme(axis.title=element_text(size=8,face="italic"))
+```
+
+
+
+Y para el año 2022 durante el dia obtenemos el siguiente grafico del cual podemos ver claramente que el mes que mas ruido hubo fue en marzo tambien. Pero sin llegar a superar los niveles de 2021.
+
+```{r}
+d2 <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d", year(dateObserved) == 2022) %>% group_by(month(dateObserved)) %>% rename(mes = "month(dateObserved)") 
+#%>% summarise(promedio_mensual=mean(Valores)) %>% rename(mes = "month(dateObserved)") 
+
+d2$mes[d2$mes == 1]<- "Enero"
+d2$mes[d2$mes == 2]<- "Febrero"
+d2$mes[d2$mes == 3]<- "Marzo"
+d2$mes[d2$mes == 4]<- "Abril"
+d2$mes[d2$mes == 5]<- "Mayo"
+d2$mes[d2$mes == 6]<- "Junio"
+d2$mes[d2$mes == 7]<- "Julio"
+d2$mes[d2$mes == 8]<- "Agosto"
+d2$mes[d2$mes == 9]<- "Septiembre"
+d2$mes[d2$mes == 10]<- "Octubre"
+d2$mes[d2$mes == 11]<- "Noviembre"
+d2$mes[d2$mes == 12]<- "Diciembre"
+
+
+ggplot(d2, aes(x = mes, y = Valores))+ geom_path(size=5, colour="blue") + guides(color="black")+ ylab("Nivel de LAeq_d\n durante el dia \n en el año 2022")+ xlab("Meses")+ theme(axis.title=element_text(size=8,face="italic"))
+```
+
+
+
+
 
 
 
