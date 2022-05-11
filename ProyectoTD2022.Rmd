@@ -60,7 +60,7 @@ knit_hooks$set(inline = function(x) {
 Instalación automática de paquetes
 
 
-```{r, echo = F}
+```{r, echo = T}
 
 # Especificamos las librerías necesarias en esta lista
 
