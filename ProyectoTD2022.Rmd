@@ -1,5 +1,4 @@
 ---
-# Ver https://bookdown.org/yihui/rmarkdown/ 
 title: "Mini Proyecto 2022. Contaminación acústica en el barrio de Ruzafa"
 subtitle: Tratamiento de Datos. Grado en Ciencia de Datos- UV
 author: "Sandra Paniagua Sanchez,  Máximo Valero,Sergio Cabral, Antonio Hernando Graboleda, Mauro Marín Aura"
@@ -61,7 +60,7 @@ knit_hooks$set(inline = function(x) {
 Instalación automática de paquetes
 
 
-```{r}
+```{r, echo = F}
 
 # Especificamos las librerías necesarias en esta lista
 
@@ -164,15 +163,21 @@ for (i in archivos){
 
 ```
 
+
+
 #  Asegurarse de que las fechas estan en el formato correcto
 ```{r echo = T}
-for (i in archivos){
-  i$recvTime <- ymd_hms(i$recvTime)
-  i$dateObserved <- ymd(i$dateObserved)
+ for (i in archivos){
+   i$recvTime <- format(i$recvTime,format="%d-%b-%Y")
+   i$dateObserved <- format(i$recvTime,format="%d-%b-%Y")
 }
-Ruzafa1$recvTime <- ymd_hms(Ruzafa1$recvTime)
-Ruzafa1$dateObserved <- ymd(Ruzafa1$dateObserved)
+
+Ruzafa1$recvTime <- as.Date(Ruzafa1$recvTime,format="%d-%b-%Y")
+Ruzafa1$dateObserved <- as.Date(Ruzafa1$dateObserved,format="%d-%b-%Y")
 ```
+
+
+
 
 
 # 4. Unir dataframes
@@ -208,6 +213,18 @@ tidy$entityId[tidy$entityId == "T248684-daily"]<- "Sueca61"
 
 
 ```
+
+
+
+```{r}
+# 
+# tidy$recvTime <- format(tidy$recvTime,format="%d-%B-%Y")
+# tidy$dateObserved <- format(tidy$dateObserved,format="%d-%B-%Y")
+# 
+# class(tidy$dateObserved)
+
+```
+
 
 
 
@@ -255,14 +272,6 @@ ggplotly(grafico)
 
 
 ```
-
-```{r}
-
-s <- tidy %>% group_by(month(dateObserved), `Nivel sonoro continuo equivalente`) %>%summarise(promedio_anual=mean(Valores)) 
-#HACER GRAFICO DE ESTE Y DECIR EN QUE AÑO 
-```
-
-
 
 #Detectar outliers con la regla Hampel
 
@@ -325,63 +334,36 @@ dirty <- tidy %>% mutate(across(Valores,metodos))
 ```{r}
 dirty %>% 
   pivot_longer(cols = contains("regla"), names_to="regla", values_to="outliers") %>% 
-  ggplot(aes(regla, Valores, color=outliers))+ geom_point(position='jitter')
+  ggplot(aes(regla, Valores, color=outliers))+ geom_boxplot()
 
 ```
 
-Como no hay missing data en el formato tidy, hemos considerado que no hay que imputar en el formato dirty porque seria sustituirlo por la media de cada calle y no aportaria mas informacion.
-
-```{r}
-library(readr)
-library(plotly)
-
-grafico <- tidy %>% filter(`Nivel sonoro continuo equivalente` == "LAeq_d") %>% ggplot( aes(x = dateObserved, y = Valores, color = entityId)) + geom_line() + labs(title= "Nivel de sonido por dia de cada calle", x = "", y = "", subtitle = "...") + theme_bw() + scale_x_date() + scale_y_continuous(breaks = c(0, 25, 50,65, 75,85, 100)) + scale_x_date(date_labels = format("%b %d, %Y"))
-
-#Mostrar el grafico 
-grafico
-#Generar un grafico interactivo al compilar en HTML
-ggplotly(grafico)
-
-
-```
 
 
 # CORRELACIÓN Y VARIANZA
 #ARREGLAR ESTOS GRÁFICOS CON LAS NUEVAS VARIABLES (D,M,Y) Y COMPROBAR QUE FUNCIONAN Y DAN RESULTADOS COHERENTES, *COMENTAR LOS RESULTADOS*
 ```{r}
-library(ggplot2)
-ggplot(data = datos,
-       aes(x = cut(recvTime , breaks = 3), y = LAeq_d)) +
-  geom_boxplot()
-
-
-dsepall <- datos$LAeq_den - mean(datos$LAeq_den)
-dsepalw <- datos$LAeq_d - mean(datos$LAeq_d)
-
-ggplot(data.frame(dsepall,dsepalw), aes(x=dsepall, y=dsepalw)) +geom_point() +geom_hline(yintercept=0, linetype="dashed", color = "red") +geom_vline(xintercept=0, linetype="dashed", color = "red") +theme_minimal()
-
-#ggplot(iris, aes(x=dsepall, y=dsepalw, shape=dsepalw)) +geom_point() +geom_smooth(method=lm, se=F, fullrange=F)+scale_color_brewer(palette="Dark2")+theme_minimal() +stat_ellipse(type = "norm")
-
-
-#ggplot(data = datos, aes(x = dateObserved, y = datos$LAeq)) +geom_point() +facet_wrap(~ datos)
-
-pairs(Ruzafa1$dateObserved~Ruzafa1$LAeq)
-pairs(Serrano$dateObserved~Serrano$LAeq)
-# HACER EL PAIRS CON DISTINTAS VARIABLES Y COMENTAR
-#AÑADIR COEFICIENTES DE CORRELACIÓN Y VARIANZA Y MÁS COSAS QUE SE OS OCURRA INVESTIGANDO
+# library(ggplot2)
+# ggplot(data = datos,
+#        aes(x = cut(recvTime , breaks = 3), y = LAeq_d)) +
+#   geom_boxplot()
+# 
+# 
+# dsepall <- datos$LAeq_den - mean(datos$LAeq_den)
+# dsepalw <- datos$LAeq_d - mean(datos$LAeq_d)
+# 
+# ggplot(data.frame(dsepall,dsepalw), aes(x=dsepall, y=dsepalw)) +geom_point() +geom_hline(yintercept=0, linetype="dashed", color = "red") +geom_vline(xintercept=0, linetype="dashed", color = "red") +theme_minimal()
+# 
+# #ggplot(iris, aes(x=dsepall, y=dsepalw, shape=dsepalw)) +geom_point() +geom_smooth(method=lm, se=F, fullrange=F)+scale_color_brewer(palette="Dark2")+theme_minimal() +stat_ellipse(type = "norm")
+# 
+# 
+# #ggplot(data = datos, aes(x = dateObserved, y = datos$LAeq)) +geom_point() +facet_wrap(~ datos)
+# 
+# pairs(Ruzafa1$dateObserved~Ruzafa1$LAeq)
+# pairs(Serrano$dateObserved~Serrano$LAeq)
+# # HACER EL PAIRS CON DISTINTAS VARIABLES Y COMENTAR
+# #AÑADIR COEFICIENTES DE CORRELACIÓN Y VARIANZA Y MÁS COSAS QUE SE OS OCURRA INVESTIGANDO
 ```
-
-
-# PREGUNTAS: (hay que responderlas apoyándose de las instrucciones y/o gráficas de R)
-"""
--¿Qué año hubo más ruido en Fallas? (Entre Sept 21 y Mar 22), comparar y mostrar los gráficos.
--En general,¿hubo más ruido en 2021 o en 2022?
--¿En qué més del año hubo mayor ruido por la noche?
--¿Como afectó la cuarentena al nivel de ruido? Hacer gráfica comparativa de 2020 y 2022 por meses.
--¿En que calles se registró más ruido, coninciden con las calles más céntricas?
--Supera por mucho el nivel de ruido el nivel perjudicial? (Buscar cuanto es)
--¿Hay más ruido en invierno o en verano?
-
 
 
 RESPUESTA A PREGUNTAS:
@@ -391,132 +373,53 @@ RESPUESTA A PREGUNTAS:
 Para el año 2021 durante el dia obtenemos el siguiente grafico del cual podemos ver claramente que el mes que mas ruido hubo fue en marzo seguido del mes de Spetiembre.
 
 ```{r}
-d <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d", year(dateObserved) == 2021) %>% group_by(month(dateObserved)) %>% rename(mes = "month(dateObserved)") 
-#%>% summarise(promedio_mensual=mean(Valores)) %>% rename(mes = "month(dateObserved)") 
+d <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d", year(dateObserved) == 2021) %>% group_by(month(dateObserved)) %>% rename(mes = "month(dateObserved)") %>% summarise(promedio_mensual=mean(Valores)) 
+#%>% rename(mes = "month(dateObserved)") 
 
-d$mes[d$mes == 1]<- "Enero"
-d$mes[d$mes == 2]<- "Febrero"
-d$mes[d$mes == 3]<- "Marzo"
-d$mes[d$mes == 4]<- "Abril"
-d$mes[d$mes == 5]<- "Mayo"
-d$mes[d$mes == 6]<- "Junio"
-d$mes[d$mes == 7]<- "Julio"
-d$mes[d$mes == 8]<- "Agosto"
-d$mes[d$mes == 9]<- "Septiembre"
-d$mes[d$mes == 10]<- "Octubre"
-d$mes[d$mes == 11]<- "Noviembre"
-d$mes[d$mes == 12]<- "Diciembre"
+d$mes<- format(d$mes,format="%B")
 
-
-ggplot(d, aes(x = mes, y = Valores))+ geom_path(size=5, colour="red") + guides(color="none")+ ylab("Nivel de LAeq_d\n durante el dia \n en el año 2021")+ xlab("Meses")+ theme(axis.title=element_text(size=8,face="italic"))
+ggplot(d, aes(x = mes, y = promedio_mensual))+ geom_point()+ylab("Nivel de LAeq_d\n durante el dia \n en el año 2021")+ xlab("Meses")+ theme(axis.title=element_text(size=10,face="italic"))
 ```
 
 
+¿Que dia es el mas ruidoso en fallas de cada año?
 
-Y para el año 2022 durante el dia obtenemos el siguiente grafico del cual podemos ver claramente que el mes que mas ruido hubo fue en marzo tambien. Pero sin llegar a superar los niveles de 2021.
-
+Como hemos podido comprobar antes, el mes de marzo de 2022 es el mas ruidoso, por tanto nos surgio que dia fue el mas ruidoso durante el dia.
 ```{r}
-d2 <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d", year(dateObserved) == 2022) %>% group_by(month(dateObserved)) %>% rename(mes = "month(dateObserved)") 
-#%>% summarise(promedio_mensual=mean(Valores)) %>% rename(mes = "month(dateObserved)") 
 
-d2$mes[d2$mes == 1]<- "Enero"
-d2$mes[d2$mes == 2]<- "Febrero"
-d2$mes[d2$mes == 3]<- "Marzo"
-d2$mes[d2$mes == 4]<- "Abril"
-d2$mes[d2$mes == 5]<- "Mayo"
-d2$mes[d2$mes == 6]<- "Junio"
-d2$mes[d2$mes == 7]<- "Julio"
-d2$mes[d2$mes == 8]<- "Agosto"
-d2$mes[d2$mes == 9]<- "Septiembre"
-d2$mes[d2$mes == 10]<- "Octubre"
-d2$mes[d2$mes == 11]<- "Noviembre"
-d2$mes[d2$mes == 12]<- "Diciembre"
+par(mfrow= c(1,2))
+
+#Spetiembre 2021
+diadia2021 <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d", month(dateObserved)== 9, year(dateObserved) == 2021) %>% group_by(day(dateObserved))%>% rename(dia = "day(dateObserved)") %>% summarise(promedio_pordia=mean(Valores))
+
+diadia2021$dia <- as.factor(diadia2021$dia)
+
+ggplot(diadia2021, aes(x = dia, y = promedio_pordia)) + geom_col(size=1, fill="darkgreen", alpha = 0.5, color = "darkgreen") + guides(color="none")+ ylab("Nivel de LAeq_d")+ xlab("Dias")+ theme(axis.title=element_text(size=8,face="italic")) + geom_hline(yintercept = max(diadia2021$promedio_pordia), color = "red", show.legend = TRUE) + ggtitle("Nivel de LAeq_d durante el mes de Septiembre en 2021") + geom_text(x = 15,  y = max(diadia2021$promedio_pordia), label = max(diadia2021$promedio_pordia)) + geom_point()
 
 
-ggplot(d2, aes(x = mes, y = Valores))+ geom_path(size=5, colour="blue") + guides(color="black")+ ylab("Nivel de LAeq_d\n durante el dia \n en el año 2022")+ xlab("Meses")+ theme(axis.title=element_text(size=8,face="italic"))
+#Marzo 2022
+diadia2022 <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d", month(dateObserved)== 3, year(dateObserved) == 2022) %>% group_by(day(dateObserved))%>% rename(dia = "day(dateObserved)") %>% summarise(promedio_pordia=mean(Valores))
+
+diadia2022$dia <- as.factor(diadia2022$dia)
+
+ggplot(diadia2022, aes(x = dia, y = promedio_pordia)) + geom_col(size=1, fill="darkblue", alpha = 0.5, color = "darkblue") + guides(color="none")+ ylab("Nivel de LAeq_d")+ xlab("Dias")+ theme(axis.title=element_text(size=8,face="italic")) + geom_hline(yintercept = max(diadia2022$promedio_pordia), color = "red", show.legend = TRUE)+ ggtitle("Nivel de LAeq_d durante el mes de Marzo en 2022")
+
+
 ```
 
 
 
 
-En cuanto a la noche pasa lo siguiente:
-
-Y durante 2021 pasa lo mismo que durante el dia, el mes con mas ruido en la calle fue durante el mes de marzo seguido de septiembre.
-```{r}
-n <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_n", year(dateObserved) == 2021) %>% group_by(month(dateObserved)) %>% rename(mes = "month(dateObserved)") 
-#%>% summarise(promedio_mensual=mean(Valores)) %>% rename(mes = "month(dateObserved)") 
-
-n$mes[n$mes == 1]<- "Enero"
-n$mes[n$mes == 2]<- "Febrero"
-n$mes[n$mes == 3]<- "Marzo"
-n$mes[n$mes == 4]<- "Abril"
-n$mes[n$mes == 5]<- "Mayo"
-n$mes[n$mes == 6]<- "Junio"
-n$mes[n$mes == 7]<- "Julio"
-n$mes[n$mes == 8]<- "Agosto"
-n$mes[n$mes == 9]<- "Septiembre"
-n$mes[n$mes == 10]<- "Octubre"
-n$mes[n$mes == 11]<- "Noviembre"
-n$mes[n$mes == 12]<- "Diciembre"
-
-
-ggplot(n, aes(x = mes, y = Valores))+ geom_path(size=5, colour="darkred") + guides(color="grey")+ ylab("Nivel de LAeq_d\n durante la noche \n en el año 2021")+ xlab("Meses")+ theme(axis.title=element_text(size=8,face="italic"))
-```
-
-Y para el año de 2022:
-
-
-```{r}
-n2 <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_n", year(dateObserved) == 2022) %>% group_by(month(dateObserved)) %>% rename(mes = "month(dateObserved)") 
-#%>% summarise(promedio_mensual=mean(Valores)) %>% rename(mes = "month(dateObserved)") 
-
-n2$mes[n2$mes == 1]<- "Enero"
-n2$mes[n2$mes == 2]<- "Febrero"
-n2$mes[n2$mes == 3]<- "Marzo"
-n2$mes[n2$mes == 4]<- "Abril"
-n2$mes[n2$mes == 5]<- "Mayo"
-n2$mes[n2$mes == 6]<- "Junio"
-n2$mes[n2$mes == 7]<- "Julio"
-n2$mes[n2$mes == 8]<- "Agosto"
-n2$mes[n2$mes == 9]<- "Septiembre"
-n2$mes[n2$mes == 10]<- "Octubre"
-n2$mes[n2$mes == 11]<- "Noviembre"
-n2$mes[n2$mes == 12]<- "Diciembre"
-
-
-ggplot(n2, aes(x = mes, y = Valores))+ geom_path(size=5, colour="darkblue") + guides(color="none")+ ylab("Nivel de LAeq_d\n durante la noche \n en el año 2022")+ xlab("Meses")+ theme(axis.title=element_text(size=8,face="italic"))
-```
-
-
-
-
-Viendo estas graficas uno podria plantearse otra duda: ¿que dia de estos meses fue el que mas ruido hubo? ¿Y el que menos ruido hubo?
-
-
-2. En general,¿hubo más ruido en 2022, 2021 o en 2022 por la noche? ¿Y por el dia?
-
-```{r}
-anos <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_n") %>% group_by(year(dateObserved)) %>% rename(ano = "year(dateObserved)")%>% summarise(promedio_anual=mean(Valores)) 
-
-ggplot(anos, aes(x = ano, y = promedio_anual)) + geom_col( color = "red", fill = "red", alpha = 0.2)
-
-```
-
-
-
-Por tanto, hubo mas ruido en el año 2022 por la noche.
-
-
-```{r}
-anos2 <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d") %>% group_by(year(dateObserved)) %>% rename(ano = "year(dateObserved)")%>% summarise(promedio_anual=mean(Valores)) 
-
-ggplot(anos2, aes(x = ano, y = promedio_anual)) + geom_col( color = "blue", fill = "blue", alpha = 0.2)
-
-```
-Al igual pasa durante el dia.
-
-
-
+# PREGUNTAS: (hay que responderlas apoyándose de las instrucciones y/o gráficas de R)
+"""
+-¿Qué año hubo más ruido en Fallas? (Entre Sept 21 y Mar 22), comparar y mostrar los gráficos.
+- ¿Que dia fue que mas ruido se detecto y que dia el que menos?
+-En general,¿hubo más ruido en 2021 o en 2022?
+-¿En qué més del año hubo mayor ruido por la noche?
+-¿Como afectó la cuarentena al nivel de ruido? Hacer gráfica comparativa de 2020 y 2022 por meses.
+-¿En que calles se registró más ruido, coninciden con las calles más céntricas?
+-Supera por mucho el nivel de ruido el nivel perjudicial? (Buscar cuanto es)
+-¿Hay más ruido en invierno o en verano?
 
 
 
