@@ -333,6 +333,8 @@ La matriz da valores próximos a 1, por lo que el grado de correlación entre la
 
 
 ```{r}
+anyoanyo <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d") %>% group_by(year(dateObserved))%>% rename(year = "year(dateObserved)") %>% summarise(promedio_pordia=mean(Valores))
+
 # ggplot(data = datos,
 #        aes(x = cut(recvTime , breaks = 3), y = LAeq_d)) +
 #   geom_boxplot()
