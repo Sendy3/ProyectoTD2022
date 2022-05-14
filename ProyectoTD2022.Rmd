@@ -53,7 +53,7 @@ knit_hooks$set(inline = function(x) {
 
 ```
 
-```{r, echo = T, include=FALSE}
+```{r, echo = FALSE, include=FALSE}
 
 # Especificamos las librerías necesarias en esta lista
 
@@ -265,18 +265,16 @@ Dada la gran cantidad de datos, hemos considerado oportuno hacer un analisis uni
 library(magrittr)
 
 valores <- tidy %>% select(entityId, `Nivel sonoro continuo equivalente`, Valores)%>% group_by(entityId, `Nivel sonoro continuo equivalente`) %>% summarise(Minimo = min(Valores, na.rm=TRUE), Percentil25 = quantile(probs = 1/4, Valores, na.rm=TRUE), Mediana = median(Valores, na.rm=TRUE), "Media" = mean(Valores, na.rm=TRUE), "Desviació típica" = sd(Valores, na.rm=TRUE), Percentil75 = quantile(probs = 3/4, Valores, na.rm=TRUE), Maximo  = max(Valores, na.rm=TRUE)) %>% mutate(across(is.numeric, round, digits=2))
-
-head(valores, n = 5)
 ```
 
-```{r, echo = TRUE}
+```{r, echo = FALSE}
 kable(valores[1:5,])
 ```
 
 
 
 
-```{r , echo=TRUE}
+```{r , echo=FALSE}
 
 callesmedia <- valores %>% filter(`Nivel sonoro continuo equivalente`  %in% c("LAeq_d","LAeq_n"))%>%select(entityId, Media, `Nivel sonoro continuo equivalente`)
 
@@ -358,7 +356,7 @@ dirty <- tidy %>% mutate(across(Valores,metodos))
 
 
 
-```{recho=TRUE}
+```{r, echo=FALSE}
 dd0 <- tidy %>% filter( `Nivel sonoro continuo equivalente` =="LAeq_d") %>% group_by(month(dateObserved), `Nivel sonoro continuo equivalente`, year(dateObserved))%>% rename(mes = "month(dateObserved)", anyo = "year(dateObserved)") %>%select(Valores, dateObserved, `Nivel sonoro continuo equivalente`) %>%summarise(promedio_mensual=mean(Valores))  
 
 #dd0$mes<- as.character(dd0$mes)
@@ -373,7 +371,7 @@ COMENTAR:....................................................
 
 
 
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 dd0 <- tidy %>% filter( `Nivel sonoro continuo equivalente` =="LAeq_n") %>% group_by(month(dateObserved), `Nivel sonoro continuo equivalente`, year(dateObserved))%>% rename(mes = "month(dateObserved)", anyo = "year(dateObserved)") %>%select(Valores, dateObserved, `Nivel sonoro continuo equivalente`) %>%summarise(promedio_mensual=mean(Valores))  
 
 #dd0$mes<- as.character(dd0$mes)
@@ -410,7 +408,7 @@ COMENTAR:............................
 
 3. ¿Hubo más ruido en 2020, 2021 o en 2022 por la noche? ¿Y por el dia?
 
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 
 anyos <- tidy %>% filter( `Nivel sonoro continuo equivalente` %in% c("LAeq_d", "LAeq_n")) %>% group_by(year(dateObserved), `Nivel sonoro continuo equivalente`) %>% rename(anyo = "year(dateObserved)")%>% summarise(promedio_anual=mean(Valores)) 
 
@@ -431,7 +429,7 @@ Por tanto, hubo mas ruido en el año 2022 por la noche. Al igual pasa durante el
 
 Como hemos podido comprobar antes, el mes de marzo de 2022 es el mas ruidoso, por tanto nos surgio que dia fue el mas ruidoso durante el dia.
 #Comprobar
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 
 par(mfrow= c(1,2))
 
@@ -463,7 +461,7 @@ ggplot(diadia2022, aes(x = dia, y = promedio_pordia)) + geom_col(size=1, fill="d
 5. ¿Que calle es la mas ruidosa?
 
 
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 
 #Ver que calle es la mas ruidosa
 
@@ -481,7 +479,7 @@ calleminimo <-calleminimo$entityId
 
 5.1.¿Y como es su estado a lo largo del año?
 
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 #Seleccionar esa calle y mostrarla en un grafico
 calles <- tidy %>% filter( `Nivel sonoro continuo equivalente` == "LAeq_d", entityId %in% c(callemaximo, calleminimo) )
 
