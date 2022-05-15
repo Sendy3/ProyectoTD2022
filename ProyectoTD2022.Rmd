@@ -390,9 +390,7 @@ ggplot(data=dd0, aes(x=mes, y=promedio_mensual,  color = anyo)) + geom_line(line
 
 
 ```
-COMENTAR:....................................................
-
-
+Como se puede observar, durante el día, el año menos ruidoso es 2020. 2021 es más o menos regular a lo largo de todo el año, pudiendo observar que los dos primeros meses fueron bastante poco ruidosos, manteniéndose hasta septiembre, que despunta para bajar nuevamente. 2022 es el más ruidoso siendo marzo el mes más destacable, probablemente debido a la actividad sonora durante las Fallas.
 
 
 ```{r, echo=FALSE}
@@ -404,8 +402,7 @@ dd0$anyo<- as.character(dd0$anyo)
 ggplot(data=dd0, aes(x=mes, y=promedio_mensual,  color = anyo)) + geom_line(linetype = "dashed")+ geom_point(size = 5, shape = 18)+ylab("Promedio mensual de sonido ")+ xlab("Meses")+ theme(axis.title=element_text(size=10,face="italic"))  + theme(legend.position="bottom") + ggtitle("Promedio mensual por la noche ")
 
 ```
-COMENTAR:............................
-
+De noche de nuevo el mes más ruidoso es 2022, siendo marzo el más destacable, sin embargo en 2021 se puede apreciar un incremento bastante notable a partir de abril, que durante el día no se aprecia. Septiembre vuelve a ser el mes más ruidoso de 2021 y en 2020 no hay nada que destacar.
 
 
 
