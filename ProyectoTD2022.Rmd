@@ -235,23 +235,25 @@ tidy$entityId[tidy$entityId == "T248684-daily"]<- "Sueca61"
 
 ```
 
+Al realizar el estudio y limpieza de los datos para conseguir un formato tidy nos encontramos con una serie de valores infinitos que nos perjudican a la hora de trabajar con los datos, ya que disparan los totales y perjudican a la obtención de datos y conclusiones. Por lo tanto deberemos controlar estos valores extremos de la siguiente manera:
 
-En cuanto a los valores Infinitos, tambien tenemos que controlarlos de la siguiente manera:
 
-- Primero buscamos los valores infinitos de nuestro data.frame Y seleccionamos los que son distintos de infinito.
+Primero buscamos los valores infinitos de nuestro data.frame seleccionando aquellos que sean distintos de infinito.
+
 ```{r, include=FALSE}
 tidy_infinitos <- tidy %>% filter(Valores == Inf)
 
 tidy_sininfinitos <- tidy %>% filter(Valores != Inf)
 ```
 
-- Cambiamos aquellos que tengan Inf por un valor muy alto que hemos considerado que seria 100.
+Cambiamos aquellos que tengan un valor infinito por un valor bastante alto, para el cual hemos considerado 90, ya que debía ser un valor suficientemente alto como para representar con fiabilidad el dato pero sin ser extremadamente alto para no alterar el estudio posterior de estos. Por esta razón, consideramos que sería mejor utilizar el valor 90 que realizar la media de todos los valores, siendo esta una alternativa más fiel en cuanto a los valores reales.
+
 ```{r, include=FALSE}
-tidy_infinitos$Valores[tidy_infinitos$Valores== Inf]<- 100 #60.4
+tidy_infinitos$Valores[tidy_infinitos$Valores== Inf]<- 90 
 
 ```
 
-- Por ultimo, actualizamos el data.frame tidy con los valores cambiados
+Por ultimo, actualizamos el data.frame tidy con los nuevos valores.
 ```{r, include=FALSE}
 tidy <- rbind(tidy_sininfinitos, tidy_infinitos)
 ```
