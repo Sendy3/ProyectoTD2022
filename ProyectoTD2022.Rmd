@@ -349,6 +349,7 @@ dirty <- tidy %>% mutate(across(Valores,metodos))
 -¿En que calles se registró más ruido, coninciden con las calles más céntricas?
 -Supera por mucho el nivel de ruido el nivel perjudicial? (Buscar cuanto es)
 -¿Hay más ruido en invierno o en verano?
+-¿Hay más ruido en las horas de la tarde o de la noche?
 
 
 
@@ -490,3 +491,18 @@ ggplot(calles, aes(x = dateObserved, y = Valores, color = entityId)) + geom_line
 La calle mas ruidosa del Barrio de Ruzafa por tanto es `r callemaximo` 
 La calle menos ruidosa del Barrio de Ruzafa por tanto es `r calleminimo` 
 
+```{r}
+par(mfrow = c(1, 2))
+tn<- tidy %>% filter(`Nivel sonoro continuo equivalente` == "LAeq_e") %>% group_by(day(dateObserved)) %>% rename(dia = "day(dateObserved)") %>% summarise(promediotar = mean(Valores))
+
+tn$dia <- as.integer(tn$dia)
+
+ggplot(data = tn, aes(x = dia, y = promediotar, add = TRUE)) + geom_line(color = 'darkgreen') + geom_point(color = 'darkgreen')
+
+tn2<- tidy %>% filter(`Nivel sonoro continuo equivalente` == "LAeq_n") %>% group_by(day(dateObserved)) %>% rename(dia = "day(dateObserved)") %>% summarise(promediotar = mean(Valores))
+
+tn2$dia <- as.integer(tn2$dia)
+
+ggplot(data = tn2, aes(x = dia, y = promediotar, add = TRUE)) + geom_line(color = 'blue') + geom_point(color = 'blue')
+```
+Comprobamos que efectivamente, de media son más ruidosas las tardes que las noches.
