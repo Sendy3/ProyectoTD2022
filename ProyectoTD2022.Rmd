@@ -522,3 +522,19 @@ tn$dia <- as.integer(tn$dia)
 ggplot(data = tn, aes(x = dia, y = promediotar, add = TRUE, color = `Nivel sonoro continuo equivalente`)) + geom_line() + geom_point()
 ```
 Comprobamos que efectivamente, de media son más ruidosas las tardes que las noches en todos los días del mes.
+
+
+6- ¿Hay más ruido en verano o en invierno?
+
+```{r}
+library(lubridate)
+verano <- tidy %>% filter(month(dateObserved)==c('5','6','7','8'))
+invierno <- tidy %>% filter(month(dateObserved)==c('11','12','1','2'))
+
+ggplot(data=verano, aes(x=dateObserved, y = Valores, color= Valores)) + geom_point()
+
+ggplot(data = invierno, aes(x=dateObserved, y = Valores, color= Valores)) + geom_point()
+
+```
+
+Como podemos observar comparando las dos gráficas, llegamos a la conclusión que en los meses de verano tendremos menos ruido que en los meses de invierno .
