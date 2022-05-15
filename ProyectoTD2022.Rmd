@@ -367,6 +367,7 @@ vista presentar un alto nivel de covarianza.
 2. ¿El promedio de LAeq_n max es igual que el min de sonido al promedio mensual de LAeq_d?
 3. ¿Hubo más ruido en 2022, 2021 o en 2022 por la noche? ¿Y por el dia?
 4. ¿Que dia es el mas ruidoso en fallas de cada año?(2021,2022)
+5. ¿De media hay más ruido por la tarde que por la noche?
 
 -¿En que calles se registró más ruido, coninciden con las calles más céntricas?
 -Supera por mucho el nivel de ruido el nivel perjudicial? (Buscar cuanto es)
@@ -514,17 +515,10 @@ La calle mas ruidosa del Barrio de Ruzafa por tanto es `r callemaximo`
 La calle menos ruidosa del Barrio de Ruzafa por tanto es `r calleminimo` 
 
 ```{r}
-par(mfrow = c(1, 2))
-tn<- tidy %>% filter(`Nivel sonoro continuo equivalente` == "LAeq_e") %>% group_by(day(dateObserved)) %>% rename(dia = "day(dateObserved)") %>% summarise(promediotar = mean(Valores))
+tn<- tidy %>% filter(`Nivel sonoro continuo equivalente` %in% c("LAeq_e", "LAeq_n")) %>% group_by(day(dateObserved), `Nivel sonoro continuo equivalente`) %>% rename(dia = "day(dateObserved)") %>% summarise(promediotar = mean(Valores))
 
 tn$dia <- as.integer(tn$dia)
 
-ggplot(data = tn, aes(x = dia, y = promediotar, add = TRUE)) + geom_line(color = 'darkgreen') + geom_point(color = 'darkgreen')
-
-tn2<- tidy %>% filter(`Nivel sonoro continuo equivalente` == "LAeq_n") %>% group_by(day(dateObserved)) %>% rename(dia = "day(dateObserved)") %>% summarise(promediotar = mean(Valores))
-
-tn2$dia <- as.integer(tn2$dia)
-
-ggplot(data = tn2, aes(x = dia, y = promediotar, add = TRUE)) + geom_line(color = 'blue') + geom_point(color = 'blue')
+ggplot(data = tn, aes(x = dia, y = promediotar, add = TRUE, color = `Nivel sonoro continuo equivalente`)) + geom_line() + geom_point()
 ```
-Comprobamos que efectivamente, de media son más ruidosas las tardes que las noches.
+Comprobamos que efectivamente, de media son más ruidosas las tardes que las noches en todos los días del mes.
