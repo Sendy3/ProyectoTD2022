@@ -312,29 +312,49 @@ dirty <- tidy %>% mutate(across(Valores,metodos))
 
 
 # 7. CORRELACIÓN Y VARIANZA
-#ARREGLAR ESTOS GRÁFICOS CON LAS NUEVAS VARIABLES (D,M,Y) Y COMPROBAR QUE FUNCIONAN Y DAN RESULTADOS COHERENTES, *COMENTAR LOS RESULTADOS*
-```{r, echo=TRUE}
-# library(ggplot2)
-# ggplot(data = datos,
-#        aes(x = cut(recvTime , breaks = 3), y = LAeq_d)) +
-#   geom_boxplot()
-# 
-# 
-# dsepall <- datos$LAeq_den - mean(datos$LAeq_den)
-# dsepalw <- datos$LAeq_d - mean(datos$LAeq_d)
-# 
-# ggplot(data.frame(dsepall,dsepalw), aes(x=dsepall, y=dsepalw)) +geom_point() +geom_hline(yintercept=0, linetype="dashed", color = "red") +geom_vline(xintercept=0, linetype="dashed", color = "red") +theme_minimal()
-# 
-# #ggplot(iris, aes(x=dsepall, y=dsepalw, shape=dsepalw)) +geom_point() +geom_smooth(method=lm, se=F, fullrange=F)+scale_color_brewer(palette="Dark2")+theme_minimal() +stat_ellipse(type = "norm")
-# 
-# 
-# #ggplot(data = datos, aes(x = dateObserved, y = datos$LAeq)) +geom_point() +facet_wrap(~ datos)
-# 
-# pairs(Ruzafa1$dateObserved~Ruzafa1$LAeq)
-# pairs(Serrano$dateObserved~Serrano$LAeq)
-# # HACER EL PAIRS CON DISTINTAS VARIABLES Y COMENTAR
-# #AÑADIR COEFICIENTES DE CORRELACIÓN Y VARIANZA Y MÁS COSAS QUE SE OS OCURRA INVESTIGANDO
+Una primera medida de asociación lineal entre dos variables
+cuantitativas resulta de la covarianza entre ellas. Dado que la
+covarianza es una esperanza del producto de dispersiones de las
+variables en torno a su media, esta indicaría donde en promedio tiende a
+estar una de las variables cunado la otra está por encima o por debajo
+de su media:
+
+```{r}
+library(ggplot2)
+laeq <- Cadiz$LAeq - mean(Cadiz$LAeq)
+laeq_dens <- Cadiz$LAeq_den - mean(Cadiz$LAeq_den)
+ggplot(data.frame(laeq,laeq_dens), aes(x=laeq, y=laeq_dens)) +geom_point() +geom_hline(yintercept=0, linetype="dashed", color = "red") +geom_vline(xintercept=0, linetype="dashed", color = "red") +theme_minimal()
+laeq2 <- Cadiz$LAeq - mean(Cadiz$LAeq)
+dia <- Cadiz$dateObserved - mean(Cadiz$dateObserved)
+ggplot(data.frame(Cadiz$LAeq,Cadiz$LAeq_e), aes(x=laeq2, y=dia)) +geom_point() +geom_hline(yintercept=0, linetype="dashed", color = "red") +geom_vline(xintercept=0, linetype="dashed", color = "red") +theme_minimal()
+sol <- cbind(Cadiz$LAeq, Cadiz$LAeq_den)
+mcor<-round(cor(sol),2)
+mcor
+sol2 <- cbind(Cadiz$LAeq, Cadiz$dateObserved)
+mcor<-round(cor(sol2),2)
+mcor
 ```
+
+De esta forma podemos estudiar gráficamente la covarianza entre las
+variables LAeq y LAeq_dens y las variables LAeq y dateObserved en una
+misma calle.
+
+Podemos apreciar gráficamente que las variables LAeq y LAeq_dens tienen
+un mayor grado de relación.
+
+Pero para verlo más claramente, y de forma numérica, recurriremos al
+coeficiente de correlación, una medida que nos indica el grado de
+relación lineal entre dos variables, tomando valores entre -1 y 1 según
+el grado de esta, siendo los valores más próximos a 1 los que nos
+indican mayor grado de asociación, siendo por lo tanto la correlación
+una medida normalizada de la relación entre dos variables cuantitativas
+continuas.
+
+La matriz da valores próximos a 1, por lo que el grado de correlación
+entre las dos primeras variables es bastante alta; mientras que en el
+caso de las otras dos, las cifras son bastante mas bajas, por lo que la
+correlación entre LAeq y el día en que se observa no parece a primera
+vista presentar un alto nivel de covarianza.
 
 
 
