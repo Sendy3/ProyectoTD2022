@@ -446,7 +446,7 @@ Como es de esperar, el nivel sonoro continuo equivalente es mayor en las horas d
 
 4. ¿Que dia es el mas ruidoso en fallas de cada año?
 
-Como hemos podido comprobar antes, el mes de marzo de 2022 es el mas ruidoso, por tanto nos surgio que dia fue el mas ruidoso durante el dia.
+Como hemos podido comprobar antes, el mes de marzo de 2022 es el mas ruidoso, por tanto nos surgió la duda de qué dia fue el más ruidoso durante el dia (7:00 - 19:00).
 #Comprobar
 ```{r, echo=FALSE}
 
@@ -474,7 +474,8 @@ ggplot(diadia2022, aes(x = dia, y = promedio_pordia)) + geom_col(size=1, fill="d
 
 
 ```
-
+Durante el mes de septiembre de 2021, puede apreciarse una diferencia entre los días de fallas (1-5) con el resto de días, que son bastante regulares. En las fallas de septiembre de 2021 el día más ruidoso es el 5 (último día). 
+Lo mismo ocurre con marzo de 2022, siendo las fallas los días 15 al 19, que son más ruidosos que el resto del mes, aunque los días 12 y 13 también hubo un nivel de ruido similar. De nuevo, el mes más ruidoso del mes es el último día de fallas, en este caso el 19.
 
 
 5. ¿Que calle es la mas ruidosa?
