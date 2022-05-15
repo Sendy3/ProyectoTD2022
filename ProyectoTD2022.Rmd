@@ -28,9 +28,9 @@ LAeq_d: Indicador de ruido de día (7:00 - 19:00)
 
 LAeq_den: Indicador de ruido día-tarde-noche
 
-LAeq_e: Indicador de ruido de día (19:00 - 23:00)
+LAeq_e: Indicador de ruido de tarde (19:00 - 23:00)
 
-LAeq_n: Indicador de ruido de día (23:00 - 7:00)
+LAeq_n: Indicador de ruido de noche (23:00 - 7:00)
 
 Dateobserved: Día al que se refieren las medidas.
 
@@ -441,9 +441,7 @@ ggplot(data=anyos, aes(x=anyo, y=promedio_anual, color = `Nivel sonoro continuo 
 
 ```
 
-Por tanto, hubo mas ruido en el año 2022 por la noche. Al igual pasa durante el dia. 
-
-
+Como es de esperar, el nivel sonoro continuo equivalente es mayor en las horas de día (7:00 - 19:00) que en las de noche (23:00 - 7:00). Cada año es de media un poco más ruidoso que el anterior, pero se puede observar un crecimiento mucho más rápido entre 2021 y 2022 en las horas de noche.
 
 
 4. ¿Que dia es el mas ruidoso en fallas de cada año?
