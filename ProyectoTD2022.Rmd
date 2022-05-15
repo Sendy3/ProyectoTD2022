@@ -99,7 +99,7 @@ limnoche<- 45
 
 # 2. Importacion de datos
 
-Para descargar los datos, hemos decidido descargar los ficheros csv cada vez que se ejecuta el archivo por si se añaden datos poder utilizarlos tambien en el estudio automaticamente.
+Para realizar la importación de los datos de forma correcta, descargamos los ficheros csv de la página web. De esta forma, cada vez que se ejecute el archivo los datos se actualizarán añadiendose los nuevos valores. Así lograremos una información completa y actualizada en el momento de ejecutar el programa, que es algo muy importante a la hora de analizar la información, pudiendo estos usarse  también en el estudio automáticamente.
 
 ```{r, include=FALSE }
 library(readr)
