@@ -12,28 +12,6 @@ output:
   pdf_document: default
 ---
 
-# Informacion de cada columna
-
-RecvTime: Fecha en la que se insertó el dato en la plataforma.
-
-FiwareServicePath: Servicio de la plataforma VLCi al que pertenece el sensor.
-
-EntityType: Tipo de entidad del sensor en la plataforma VLCi.
-
-EntityId: Identificador único del sensor en la plataforma VLCi.
-
-LAeq: Nivel sonoro continuo equivalente. Valor del nivel de presión en dBA en ponderación A de un sonido estable que en un intervalo de tiempo T (1 minuto) posee la misma presión sonora cuadrática media que el sonido que se mide y cuyo nivel varía con el tiempo.
-
-LAeq_d: Indicador de ruido de día (7:00 - 19:00)
-
-LAeq_den: Indicador de ruido día-tarde-noche
-
-LAeq_e: Indicador de ruido de tarde (19:00 - 23:00)
-
-LAeq_n: Indicador de ruido de noche (23:00 - 7:00)
-
-Dateobserved: Día al que se refieren las medidas.
-
 
 ```{r setup, cache = F,  message = F, warning = F, tidy = F, include=FALSE}
 # CONFIGURACIÓN GENERAL
@@ -79,6 +57,30 @@ Con la ayuda de diferentes tablas y graficos vamos a analizar los datos y dar re
 Los datos los hemos obtenido gracias a que están disponibles en la plataforma de datos abiertos del Ayuntamiento de Valencia, dentro de la categoría medio ambiente. 
 
 La informacion se puede obtener del siguiente enlace: https://www.valencia.es/dadesobertes/es/data/?groups=medio-ambiente
+
+
+  ** Informacion de cada columna ** 
+
+RecvTime: Fecha en la que se insertó el dato en la plataforma.
+
+FiwareServicePath: Servicio de la plataforma VLCi al que pertenece el sensor.
+
+EntityType: Tipo de entidad del sensor en la plataforma VLCi.
+
+EntityId: Identificador único del sensor en la plataforma VLCi.
+
+LAeq: Nivel sonoro continuo equivalente. Valor del nivel de presión en dBA en ponderación A de un sonido estable que en un intervalo de tiempo T (1 minuto) posee la misma presión sonora cuadrática media que el sonido que se mide y cuyo nivel varía con el tiempo.
+
+LAeq_d: Indicador de ruido de día (7:00 - 19:00)
+
+LAeq_den: Indicador de ruido día-tarde-noche
+
+LAeq_e: Indicador de ruido de tarde (19:00 - 23:00)
+
+LAeq_n: Indicador de ruido de noche (23:00 - 7:00)
+
+Dateobserved: Día al que se refieren las medidas.
+
 
 
 # Informacion de la OMS 
@@ -277,16 +279,8 @@ kable(valores[1:5,])
 
 # 6. Detectar outliers
 
-Para detectar outliers hemos creado una tabla donde resuma la informacion de cada uno de los 4 metodos principales para detectar outliers univariantes: 
-
-
-  * **Regla 3 sigma** `reglasigma(x)`: Considera que los datos siguen una distribución gaussiana. Datos típicos caracterizados por la media y la dispersión por la varianza. Valores por encima de 3 desviaciones típicas se consideran outliers.
-
-  * **Identificador Hampel** `reglahampel(x)`: Utiliza estimadores robustos y no presupone que los datos siguen una distribución gaussiana. Datos típicos caracterizados por la mediana y la dispersión por la _median absolute deviation from the median_ (MADM). Valores por encima de 3 MADM se consideran outliers.
-
-  * **Regla boxplot** `reglaboxplot(x)`: A partir de los datos se calcula su diagrama de caja (boxplot) y se definen como datos típicos superiores hasta el cuartil 75%, $x_s$; datos típicos inferiores hasta el cuartil 25%, $x_i$; y la dispersión se define como el rango intercuartílico ($IQR= x_s-x_i$). Valores por encima de $x_s+1.5\cdot IQR$ o por debajo de $x_i-1.5\cdot IQR$ se consideran outliers. Usa la función `quantile` para calcular los cuartiles.
-
-  * **Percentiles** `reglapercentil(x)`: Cualquier valor que esté fuera del rango del percentil 5% y 95% se puede considerar como atípico. Usa la función `quantile` para calcular los percentiles.
+Para detectar outliers hemos creado una tabla donde se resuma la informacion de cada uno de los 4 metodos principales para detectar outliers univariantes: 
+Hemos contado con la regla 3 sigma que considera que los datos siguen una distribucion gaussiana, la regla Hampel, la cual no presupone que los datos siguen una distribucion gaussiana y considera outliers aquellos valores por encima de 3 MADM. A su vez, hemos empleado tambien la regla de boxplot y el del percentil que tiene como principio que cualquier valor fuera del percentil 5% y 95% se puede considerar como atípico.
 
 
 ```{r, echo = F}
@@ -351,7 +345,7 @@ kable(data)
 
 
 
-# 7. CORRELACIÓN Y VARIANZA
+# 7. Correlacion y varianza
 Una primera medida de asociación lineal entre dos variables
 cuantitativas resulta de la covarianza entre ellas. Dado que la
 covarianza es una esperanza del producto de dispersiones de las
@@ -518,8 +512,7 @@ ggplot() + geom_col(data = callesmedia, aes(x = entityId, y = Media, fill = `Niv
 
 ```
 
-COMENTAR:.................................................
-
+De esta manera podemos ver a simple vista tanto durante el dia como durante la noche la media de cada una de las calles. Aparentemente la calle mas ruidosa es Cadiz y la que menos ruido genera a lo largo del tiempo es la calle con el identificador Cortes. Ademas, es muy facil determinar que calles superan los limites recomendados por la OMS y lamentablemente ninguna de las calles lo respeta. Siendo la linea horizontal en color rojo el limite de dB durante el dia y la linea horizontal de color azul el indicador de limite de dB durante la noche. Esto indica que es necesario actuar por la salud de la sociedad.
 
 
 ## 4.1.¿Como se diferencia de la calle menos ruidosa?
@@ -579,7 +572,7 @@ aumentoagostosep <- porcentageagostosep - 100
 
 
 El sonido aumenta un `r aumentoagostosep` % en Septiembre respecto a Agosto.
-La calle menos ruidosa del Barrio de Ruzafa por tanto es `r calleminimo` 
+
 
 
 
