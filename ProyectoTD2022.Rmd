@@ -534,3 +534,24 @@ ggplot(data = invierno, aes(x=dateObserved, y = Valores, color= Valores)) + geom
 ```
 
 Como podemos observar comparando las dos gráficas, llegamos a la conclusión que en los meses de verano tendremos menos ruido que en los meses de invierno .
+
+
+
+
+6. Porcentajes
+
+Como hemos visto, Septiembre es el mes mas ruidoso del año 2021, pues hemos querido compararlo con porcentajes con el mes de Agosto del mismo año a ver cuanto a aumentado.
+
+```{r}
+agostosep <- tidy %>% filter(`Nivel sonoro continuo equivalente`== "LAeq_d", year(dateObserved) == "2021", month(dateObserved) %in% c(8,9)) %>% group_by(month(dateObserved)) %>% summarise(promedio_anual=mean(Valores)) 
+
+porcentageagostosep <- (agostosep$promedio_anual[2]/agostosep$promedio_anual[1])*100
+
+aumentoagostosep <- porcentageagostosep - 100
+
+```
+
+
+El sonido aumenta un `r aumentoagostosep` % en Spetiembre respecto a Agosto.
+La calle menos ruidosa del Barrio de Ruzafa por tanto es `r calleminimo` 
+
