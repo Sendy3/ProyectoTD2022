@@ -277,23 +277,74 @@ kable(valores[1:5,])
 
 # 6. Detectar outliers
 
-Para detectar outliers hemos utilizado la regla Hampel por su robustez y blablabalabalabal
+Para detectar outliers hemos creado una tabla donde resuma la informacion de cada uno de los 4 metodos principales para detectar outliers univariantes: 
 
-```{r, include=FALSE}
-reglahampel <- function(x) {
-  
-  mediana <- median(x, na.rm=T)
-  medabdev <- mad(x, na.rm=T)  
-  
-  lowLim <- mediana-3 *medabdev
-  upLim <- mediana+3*medabdev
-  
-  x < lowLim | x > upLim
+
+  * **Regla 3 sigma** `reglasigma(x)`: Considera que los datos siguen una distribución gaussiana. Datos típicos caracterizados por la media y la dispersión por la varianza. Valores por encima de 3 desviaciones típicas se consideran outliers.
+
+  * **Identificador Hampel** `reglahampel(x)`: Utiliza estimadores robustos y no presupone que los datos siguen una distribución gaussiana. Datos típicos caracterizados por la mediana y la dispersión por la _median absolute deviation from the median_ (MADM). Valores por encima de 3 MADM se consideran outliers.
+
+  * **Regla boxplot** `reglaboxplot(x)`: A partir de los datos se calcula su diagrama de caja (boxplot) y se definen como datos típicos superiores hasta el cuartil 75%, $x_s$; datos típicos inferiores hasta el cuartil 25%, $x_i$; y la dispersión se define como el rango intercuartílico ($IQR= x_s-x_i$). Valores por encima de $x_s+1.5\cdot IQR$ o por debajo de $x_i-1.5\cdot IQR$ se consideran outliers. Usa la función `quantile` para calcular los cuartiles.
+
+  * **Percentiles** `reglapercentil(x)`: Cualquier valor que esté fuera del rango del percentil 5% y 95% se puede considerar como atípico. Usa la función `quantile` para calcular los percentiles.
+
+
+```{r, echo = F}
+outliers = function(x, method=("3sigma")){
+
+  if (method == "3sigma"){
+    lowLim = mean(x, na.rm = T) - 3 * sd(x, na.rm = T)
+    upLim = mean(x,  na.rm = T) + 3 * sd(x, na.rm = T)
+ 
+  } 
+  if(method=="percentil"){
+    lowLim= quantile(x, 0.05, na.rm = T)
+    upLim=quantile(x, 0.95, na.rm = T)
+    
   }
+  if(method=="boxplot"){
+    lowLim= quantile(x, 1 / 4, na.rm = T) - 1.5 * IQR(x, na.rm = T)
+    upLim= quantile(x, 3/4, na.rm = T) + 1.5 * IQR(x, na.rm = T)
+    
+  }
+  if (method == "hampel"){
+    lowLim= median(x)-3*mad(x)
+    upLim= median(x)+3*mad(x)
+  }
+  nOut = length(which(x<lowLim|x>upLim))
+  maxOut = max(x[which(x<lowLim)])
+  minIn = min(x[which(x>lowLim)])
+  maxIn = max(x[which(x<upLim)])
+  minOut = min(x[which(x>upLim)])
+  percOut = nOut/length(x) 
+  resultado = cbind(nOut, lowLim, upLim, maxOut, minIn, maxIn, minOut, percOut)
+  rownames(resultado)=NULL
+  return (resultado)
+}
 
-metodos <- list(reglahampel=reglahampel)
 
-dirty <- tidy %>% mutate(across(Valores,metodos))
+sigma <- outliers(tidy$Valores,  method=("3sigma"))
+hmpel <- outliers(tidy$Valores,  method=("hampel"))
+boxplot <- outliers(tidy$Valores,  method=("boxplot"))
+percentil <- outliers(tidy$Valores,  method=("percentil"))
+
+
+sigma <-as.data.frame(sigma)
+sigma$modelo <- "sigma"
+hmpel <- as.data.frame(hmpel)
+hmpel$modelo <- "hampel"
+boxplot <- as.data.frame(boxplot)
+boxplot$modelo <- "boxplot"
+percentil <- as.data.frame(percentil)
+percentil$modelo <- "percentil"
+
+
+
+data <- full_join(sigma, hmpel, by = NULL) %>% full_join(boxplot, by=NULL) %>%full_join(percentil, by=NULL)
+
+#data_tidy <- data %>% gather( key = Key, value = "Valores", -modelo)
+
+kable(data)
 
 ```
 
