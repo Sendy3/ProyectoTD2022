@@ -359,7 +359,7 @@ variables en torno a su media, esta indicaría donde en promedio tiende a
 estar una de las variables cunado la otra está por encima o por debajo
 de su media:
 
-```{r}
+```{r, echo = F}
 library(ggplot2)
 laeq <- Cadiz$LAeq - mean(Cadiz$LAeq)
 laeq_dens <- Cadiz$LAeq_den - mean(Cadiz$LAeq_den)
@@ -541,7 +541,7 @@ La calle menos ruidosa del Barrio de Ruzafa por tanto es `r calleminimo`
 
 
 ## 5. 
-```{r}
+```{r, echo = F}
 tn<- tidy %>% filter(`Nivel sonoro continuo equivalente` %in% c("LAeq_e", "LAeq_n")) %>% group_by(day(dateObserved), `Nivel sonoro continuo equivalente`) %>% rename(dia = "day(dateObserved)") %>% summarise(promediotar = mean(Valores))
 
 tn$dia <- as.integer(tn$dia)
@@ -553,7 +553,7 @@ Comprobamos que efectivamente, de media son más ruidosas las tardes que las noc
 
 ## 6. ¿Hay más ruido en verano o en invierno?
 
-```{r}
+```{r, echo = F}
 library(lubridate)
 verano <- tidy %>% filter(month(dateObserved)==c('5','6','7','8'))
 invierno <- tidy %>% filter(month(dateObserved)==c('11','12','1','2'))
@@ -572,7 +572,7 @@ Como podemos observar comparando las dos gráficas, llegamos a la conclusión qu
 Hemos decidio coger el año de 2021 porque contiene mas datos que el resto de años.
 Como hemos visto, Septiembre es el mes mas ruidoso del año 2021, pues hemos querido compararlo con porcentajes con el mes de Agosto del mismo año a ver cuanto a aumentado y ver la diferencia de sonido a la que se enfrentan los valencianos en epoca de la festividad de Fallas.
 
-```{r}
+```{r, echo = F}
 agostosep <- tidy %>% filter(`Nivel sonoro continuo equivalente`== "LAeq_d", year(dateObserved) == "2021", month(dateObserved) %in% c(8,9)) %>% group_by(month(dateObserved)) %>% summarise(promedio_anual=mean(Valores)) 
 
 porcentageagostosep <- (agostosep$promedio_anual[2]/agostosep$promedio_anual[1])*100
