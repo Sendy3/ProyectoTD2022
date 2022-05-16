@@ -582,6 +582,6 @@ aumentoagostosep <- porcentageagostosep - 100
 ```
 
 
-El sonido aumenta un `r aumentoagostosep` % en Spetiembre respecto a Agosto.
+El sonido aumenta un `r aumentoagostosep` % en Septiembre respecto a Agosto.
 La calle menos ruidosa del Barrio de Ruzafa por tanto es `r calleminimo` 
 
