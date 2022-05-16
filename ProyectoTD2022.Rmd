@@ -275,19 +275,6 @@ kable(valores[1:5,])
 
 
 
-
-```{r , echo=FALSE}
-
-callesmedia <- valores %>% filter(`Nivel sonoro continuo equivalente`  %in% c("LAeq_d","LAeq_n"))%>%select(entityId, Media, `Nivel sonoro continuo equivalente`)
-
-
-ggplot() + geom_col(data = callesmedia, aes(x = entityId, y = Media, fill = `Nivel sonoro continuo equivalente`, Limite_dia = limdia, limite_noche = limnoche), position=position_dodge(0.5))+ geom_hline(yintercept = limdia, color = "darkred", show.legend = TRUE) + geom_hline(yintercept = limnoche, color = "blue", show.legend = TRUE) +theme(axis.text.x = element_text(angle=90)) + ylab("Calles del barrio de Ruzafa") + xlab("Media total") + ggtitle("Media de sonido total por calles") + scale_color_discrete(labels = c("Dia", "Noche"))
-
-```
-
-COMENTAR:.................................................
-
-
 # 6. Detectar outliers
 
 Para detectar outliers hemos utilizado la regla Hampel por su robustez y blablabalabalabal
@@ -364,20 +351,17 @@ vista presentar un alto nivel de covarianza.
 # 8. PREGUNTAS
 
 1. ¿Que meses de cada año fueron los mas ruidosos?
-2. ¿El promedio de LAeq_n max es igual que el min de sonido al promedio mensual de LAeq_d?
-3. ¿Hubo más ruido en 2022, 2021 o en 2022 por la noche? ¿Y por el dia?
-4. ¿Que dia es el mas ruidoso en fallas de cada año?(2021,2022)
-5. ¿De media hay más ruido por la tarde que por la noche?
-
--¿En que calles se registró más ruido, coninciden con las calles más céntricas?
--Supera por mucho el nivel de ruido el nivel perjudicial? (Buscar cuanto es)
--¿Hay más ruido en invierno o en verano?
--¿Hay más ruido en las horas de la tarde o de la noche?
+2. ¿En que año hubo mas ruido por la noche? ¿Y por el dia?
+3. ¿Que dia es el mas ruidoso en fallas de cada año?(2021,2022)
+4. ¿Que calle es la mas ruidosa?
+  4.1.¿Como se diferencia de la calle menos ruidosa?
+5. 
+6. ¿Hay más ruido en verano o en invierno?
+7. ¿Que porcentaje de ruido ha aumentado el mes mas ruidoso de 2021 en comparacion con el mes anterior?
 
 
 
-1. ¿Que meses de cada año fueron los mas ruidosos?
-
+## 1. ¿Que meses de cada año fueron los mas ruidosos?
 
 
 ```{r, echo=FALSE}
@@ -406,28 +390,7 @@ De noche de nuevo el mes más ruidoso es 2022, siendo marzo el más destacable, 
 
 
 
-2. ¿El promedio de LAeq_n max es igual que el min de sonido al promedio mensual de LAeq_d?
-
-#comprobar
-```{r}
-# diferencia <- data.frame(
-#   c( max(n$promedio_mensual), max(n2$promedio_mensual)), 
-#   c(min(d$promedio_mensual), min(d2$promedio_mensual)),
-#   c("2021", "2022"))
-# 
-# diferencia_tidy <- diferencia %>% rename("Maximo mensual"=c.max.n.promedio_mensual...max.n2.promedio_mensual.., "Minimo mensual" = c.min.d.promedio_mensual...min.d2.promedio_mensual.., "Anyos" = c..2021....2022..) %>% gather(key = "Maximos y minimos", value = "Valores", 1:2) %>% group_by("Anyos")
-# 
-# 
-# ggplot(diferencia_tidy,aes(x ="Anyos", fill = "Maximos y minimos")) + geom_bar(position="dodge") + labs(title='')
-# 
-# barplot(diferencia_tidy$Valores, xlab = "Años", ylab = "tasa de mortalidad",
-#         main = "Tasa de mortalidad en Virginia\nmujer/rural", col =(diferencia_tidy$Anyos))
-# 
-
-```
-
-
-3. ¿Hubo más ruido en 2020, 2021 o en 2022 por la noche? ¿Y por el dia?
+## 2. ¿En que año hubo mas ruido por la noche? ¿Y por el dia?
 
 ```{r, echo=FALSE}
 
@@ -444,7 +407,7 @@ ggplot(data=anyos, aes(x=anyo, y=promedio_anual, color = `Nivel sonoro continuo 
 Como es de esperar, el nivel sonoro continuo equivalente es mayor en las horas de día (7:00 - 19:00) que en las de noche (23:00 - 7:00). Cada año es de media un poco más ruidoso que el anterior, pero se puede observar un crecimiento mucho más rápido entre 2021 y 2022 en las horas de noche.
 
 
-4. ¿Que dia es el mas ruidoso en fallas de cada año?
+## 3. ¿Que dia es el mas ruidoso en fallas de cada año?
 
 Como hemos podido comprobar antes, el mes de marzo de 2022 es el mas ruidoso, por tanto nos surgió la duda de qué dia fue el más ruidoso durante el dia (7:00 - 19:00).
 #Comprobar
@@ -478,7 +441,7 @@ Durante el mes de septiembre de 2021, puede apreciarse una diferencia entre los 
 Lo mismo ocurre con marzo de 2022, siendo las fallas los días 15 al 19, que son más ruidosos que el resto del mes, aunque los días 12 y 13 también hubo un nivel de ruido similar. De nuevo, el mes más ruidoso del mes es el último día de fallas, en este caso el 19.
 
 
-5. ¿Que calle es la mas ruidosa?
+## 4. ¿Que calle es la mas ruidosa?
 
 
 ```{r, echo=FALSE}
@@ -497,7 +460,22 @@ calleminimo <-calleminimo$entityId
 
 ```
 
-5.1.¿Y como es su estado a lo largo del año?
+
+
+```{r , echo=FALSE}
+
+callesmedia <- valores %>% filter(`Nivel sonoro continuo equivalente`  %in% c("LAeq_d","LAeq_n"))%>%select(entityId, Media, `Nivel sonoro continuo equivalente`)
+
+
+ggplot() + geom_col(data = callesmedia, aes(x = entityId, y = Media, fill = `Nivel sonoro continuo equivalente`, Limite_dia = limdia, limite_noche = limnoche), position=position_dodge(0.5))+ geom_hline(yintercept = limdia, color = "darkred", show.legend = TRUE) + geom_hline(yintercept = limnoche, color = "blue", show.legend = TRUE) +theme(axis.text.x = element_text(angle=90)) + ylab("Calles del barrio de Ruzafa") + xlab("Media total") + ggtitle("Media de sonido total por calles") + scale_color_discrete(labels = c("Dia", "Noche"))
+
+```
+
+COMENTAR:.................................................
+
+
+
+## 4.1.¿Como se diferencia de la calle menos ruidosa?
 
 ```{r, echo=FALSE}
 #Seleccionar esa calle y mostrarla en un grafico
@@ -510,6 +488,8 @@ ggplot(calles, aes(x = dateObserved, y = Valores, color = entityId)) + geom_line
 La calle mas ruidosa del Barrio de Ruzafa por tanto es `r callemaximo` 
 La calle menos ruidosa del Barrio de Ruzafa por tanto es `r calleminimo` 
 
+
+## 5. 
 ```{r}
 tn<- tidy %>% filter(`Nivel sonoro continuo equivalente` %in% c("LAeq_e", "LAeq_n")) %>% group_by(day(dateObserved), `Nivel sonoro continuo equivalente`) %>% rename(dia = "day(dateObserved)") %>% summarise(promediotar = mean(Valores))
 
@@ -520,7 +500,7 @@ ggplot(data = tn, aes(x = dia, y = promediotar, add = TRUE, color = `Nivel sonor
 Comprobamos que efectivamente, de media son más ruidosas las tardes que las noches en todos los días del mes.
 
 
-6- ¿Hay más ruido en verano o en invierno?
+## 6. ¿Hay más ruido en verano o en invierno?
 
 ```{r}
 library(lubridate)
@@ -536,11 +516,10 @@ ggplot(data = invierno, aes(x=dateObserved, y = Valores, color= Valores)) + geom
 Como podemos observar comparando las dos gráficas, llegamos a la conclusión que en los meses de verano tendremos menos ruido que en los meses de invierno .
 
 
+## 7. ¿Que porcentaje de ruido ha aumentado el mes mas ruidoso de 2021 en comparacion con el mes anterior?
 
-
-6. Porcentajes
-
-Como hemos visto, Septiembre es el mes mas ruidoso del año 2021, pues hemos querido compararlo con porcentajes con el mes de Agosto del mismo año a ver cuanto a aumentado.
+Hemos decidio coger el año de 2021 porque contiene mas datos que el resto de años.
+Como hemos visto, Septiembre es el mes mas ruidoso del año 2021, pues hemos querido compararlo con porcentajes con el mes de Agosto del mismo año a ver cuanto a aumentado y ver la diferencia de sonido a la que se enfrentan los valencianos en epoca de la festividad de Fallas.
 
 ```{r}
 agostosep <- tidy %>% filter(`Nivel sonoro continuo equivalente`== "LAeq_d", year(dateObserved) == "2021", month(dateObserved) %in% c(8,9)) %>% group_by(month(dateObserved)) %>% summarise(promedio_anual=mean(Valores)) 
