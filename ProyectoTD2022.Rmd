@@ -48,6 +48,25 @@ search()
 
 ```
 
+\bigskip
+
+\bigskip
+
+\noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}
+
+\bigskip
+
+\tableofcontents
+
+\bigskip
+
+\noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}
+
+
+\newpage
+
+
+
 # 1. Introducción del trabajo
 
 El objetivo de este trabajo es analizar los datos recogidos por 14 sensores que monitorizan el nivel de ruido en diferentes localizaciones del barrio de Ruzafa. 
@@ -572,8 +591,5 @@ aumentoagostosep <- porcentageagostosep - 100
 
 
 El sonido aumenta un `r aumentoagostosep` % en Septiembre respecto a Agosto.
-
-
-
 
 
