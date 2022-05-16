@@ -400,7 +400,7 @@ vista presentar un alto nivel de covarianza.
 3. ¿Que dia es el mas ruidoso en fallas de cada año?(2021,2022)
 4. ¿Que calle es la mas ruidosa?
   4.1.¿Como se diferencia de la calle menos ruidosa?
-5. 
+5. ¿Qué diferencia hay entre el ruido por la tarde y por la noche?
 6. ¿Hay más ruido en verano o en invierno?
 7. ¿Que porcentaje de ruido ha aumentado el mes mas ruidoso de 2021 en comparacion con el mes anterior?
 
@@ -529,7 +529,7 @@ La calle mas ruidosa del Barrio de Ruzafa por tanto es `r callemaximo`
 La calle menos ruidosa del Barrio de Ruzafa por tanto es `r calleminimo` 
 
 
-## 5. 
+## 5. ¿Qué diferencia hay entre el ruido por la tarde y por la noche?
 ```{r, echo = F}
 tn<- tidy %>% filter(`Nivel sonoro continuo equivalente` %in% c("LAeq_e", "LAeq_n")) %>% group_by(day(dateObserved), `Nivel sonoro continuo equivalente`) %>% rename(dia = "day(dateObserved)") %>% summarise(promediotar = mean(Valores))
 
@@ -537,7 +537,7 @@ tn$dia <- as.integer(tn$dia)
 
 ggplot(data = tn, aes(x = dia, y = promediotar, add = TRUE, color = `Nivel sonoro continuo equivalente`)) + geom_line() + geom_point() + scale_x_continuous(breaks=seq(0,30,by=1))
 ```
-Comprobamos que efectivamente, de media son más ruidosas las tardes que las noches en todos los días del mes.
+Como es evidente, el ruido por la tarde es mayor que de noche todos los días del mes debido a que hay más actividad en esa franja horaria (19:00 - 23:00). También se puede apreciar el incremento de ruido los días 5 y 19 con respecto al resto del mes, y este incremento puede notarse tanto en las horas de tarde como las de noche.
 
 
 ## 6. ¿Hay más ruido en verano o en invierno?
